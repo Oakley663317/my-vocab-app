@@ -1,0 +1,2840 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LexiScience 5000–7000｜大考中心 Level 5–6 科學記憶與語境活用工作站</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', 'Noto Sans TC', sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-50 text-slate-900">
+
+  <!-- Simplified, Clean Top Header -->
+  <header class="sticky top-0 z-30 bg-white border-b border-slate-200 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold shadow-sm">
+            <i data-lucide="book-open-check" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-slate-900">5000–7000 單字科學記憶站</h1>
+              <span class="px-2 py-0.5 text-[11px] font-semibold rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">Level 5–6</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 md:hidden">
+          <span id="mobileDayBadge" class="px-2 py-1 text-xs font-bold rounded-lg bg-slate-100 text-slate-700">第 1 天</span>
+        </div>
+      </div>
+
+      <!-- Step-by-Step Navigation Tabs -->
+      <nav class="flex items-center gap-1 overflow-x-auto custom-scrollbar pb-1 md:pb-0" aria-label="學習步驟選單">
+        <button id="navBtn-study" onclick="switchTab('study')" class="nav-tab-btn flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap bg-indigo-600 text-white shadow-sm transition">
+          <span>① 開始背單字</span>
+          <span id="navDueBadge" class="hidden ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-amber-400 text-slate-950 font-extrabold">0</span>
+        </button>
+        <button id="navBtn-practice" onclick="switchTab('practice')" class="nav-tab-btn flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap text-slate-600 hover:bg-slate-100 transition">
+          <span>② 測驗與造句活用</span>
+          <span id="navLearnedPoolBadge" class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-emerald-100 text-emerald-800 font-extrabold">0字</span>
+        </button>
+        <button id="navBtn-schedule" onclick="switchTab('schedule')" class="nav-tab-btn flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap text-slate-600 hover:bg-slate-100 transition">
+          <span>③ 複習日曆與進度</span>
+        </button>
+        <button id="navBtn-bank" onclick="switchTab('bank')" class="nav-tab-btn flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap text-slate-600 hover:bg-slate-100 transition">
+          <span>④ 單字庫管理</span>
+        </button>
+        <button id="navBtn-science" onclick="switchTab('science')" class="nav-tab-btn flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap text-slate-600 hover:bg-slate-100 transition">
+          <span>⑤ 記憶曲線與試算</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 space-y-6">
+
+    <!-- ==================== TAB 1: ① 開始背單字 ==================== -->
+    <section id="tab-study" class="tab-panel space-y-5">
+
+      <!-- Collapsible Beginner 3-Step Guide Banner -->
+      <div id="onboardingBanner" class="bg-indigo-950 text-white rounded-2xl p-4 sm:p-5 shadow-sm">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 text-xs font-bold rounded bg-indigo-500 text-white">使用指南</span>
+            <h2 class="text-sm sm:text-base font-extrabold">不知道怎麼開始？每天只要照這 3 步做：</h2>
+          </div>
+          <button onclick="toggleOnboardingBanner()" class="text-xs text-indigo-300 hover:text-white font-semibold shrink-0">收合說明 ✕</button>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+          <div class="p-3 rounded-xl bg-white/10 border border-white/10">
+            <strong class="text-indigo-200 block mb-1">第一步：看例句猜意思</strong>
+            先看下方單字卡的英文例句、點「美式發音」聽聲音，在腦中回想 3 秒後點擊<strong>「翻開解答」</strong>。
+          </div>
+          <div class="p-3 rounded-xl bg-white/10 border border-white/10">
+            <strong class="text-amber-300 block mb-1">第二步：選你的熟悉程度 (1~4)</strong>
+            翻開後看「搭配詞」與「字根」，依熟悉度點選下方 4 個按鈕，系統會把這個字加入<strong>「你的已背單字池」</strong>並排好複習日！
+          </div>
+          <div class="p-3 rounded-xl bg-white/10 border border-white/10">
+            <strong class="text-emerald-300 block mb-1">第三步：去「② 測驗與造句」驗收</strong>
+            點上方<strong>「② 測驗與造句活用」</strong>，系統會<strong>專門針對你剛背過的單字</strong>出新句子考克漏字，並由 AI 批改你的造句！
+          </div>
+        </div>
+      </div>
+
+      <!-- Compact Today's Progress & Simple Mode Bar -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm space-y-3">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="flex flex-wrap items-center gap-4">
+            <div>
+              <span class="text-xs text-slate-500 block">目前學習日</span>
+              <div class="flex items-center gap-2 mt-0.5">
+                <strong id="desktopDayLabel" class="text-base font-extrabold text-slate-900">第 1 天</strong>
+                <button id="advanceDayHeaderBtn" onclick="advanceSimulatedDay()" class="px-2 py-0.5 rounded-md bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 text-[11px] font-bold transition" title="點此模擬到了明天，看看今天背過的單字如何出現在明日複習清單">
+                  模擬到明天 (+1天)
+                </button>
+              </div>
+            </div>
+
+            <div class="h-8 w-px bg-slate-200 hidden sm:block"></div>
+
+            <div>
+              <span class="text-xs text-slate-500 block">今日新背單字進度</span>
+              <p class="text-base font-extrabold text-indigo-600 mt-0.5">
+                <span id="kpiNewToday">0</span> / <span id="kpiNewGoal">20</span> <span class="text-xs font-normal text-slate-500">字</span>
+              </p>
+            </div>
+
+            <div class="h-8 w-px bg-slate-200 hidden sm:block"></div>
+
+            <div>
+              <span class="text-xs text-slate-500 block">今日待複習舊字</span>
+              <p class="text-base font-extrabold text-amber-600 mt-0.5">
+                <span id="kpiDueReviews">0</span> <span class="text-xs font-normal text-slate-500">字 (已複習 <span id="kpiReviewedToday">0</span>)</span>
+              </p>
+            </div>
+
+            <div class="hidden">
+              <span id="kpiLearnedTotal">0</span>
+              <span id="kpiDeckTotal">60</span>
+              <span id="kpiMasteredTotal">0</span>
+              <span id="kpiAvgEF">2.50</span>
+              <span id="kpiOutputCount">0</span>
+              <span id="kpiQuizCorrect">0</span>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <select id="studyQueueMode" onchange="onStudyFilterChange()" class="px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-bold bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <option value="smart">🎯 今日自動排程 (舊字優先 + 新字)</option>
+              <option value="new">✨ 只背新單字 (尚未學過)</option>
+              <option value="due">🔄 只複習今日到期舊字</option>
+              <option value="starred">⭐ 只看星號收藏單字</option>
+              <option value="all">📖 瀏覽全部單字</option>
+            </select>
+
+            <select id="studyLevelFilter" onchange="onStudyFilterChange()" class="px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <option value="all">Level 5 + 6 (5000–7000)</option>
+              <option value="5">僅 Level 5 (5000單)</option>
+              <option value="6">僅 Level 6 (6000–7000單)</option>
+            </select>
+
+            <select id="studyThemeFilter" onchange="onStudyFilterChange()" class="px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <option value="all">全部主題</option>
+              <option value="社會與政經">社會與政經</option>
+              <option value="學術與科學">學術與科學</option>
+              <option value="心理與行為">心理與行為</option>
+              <option value="環境與自然">環境與自然</option>
+              <option value="商務與溝通">商務與溝通</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+          <div id="todayProgressBar" class="bg-indigo-600 h-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Focused Single-Column Flashcard -->
+      <div id="flashcardContainer" class="bg-white rounded-3xl border border-slate-200 shadow-md overflow-hidden">
+        <div class="px-6 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span id="cardSRSStatusBadge" class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-sky-50 text-sky-700 border border-sky-200">✨ 尚未學過的新單字</span>
+            <span id="cardLevelBadge" class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-indigo-100 text-indigo-800">Level 5</span>
+            <span id="cardThemeBadge" class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-slate-200 text-slate-700">社會與政經</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span id="cardQueueCounter" class="text-xs font-bold text-slate-500">第 1 / 20 張</span>
+            <button id="cardStarBtn" onclick="toggleStarCurrentWord()" class="p-1.5 rounded-lg hover:bg-slate-200 text-slate-400 transition" title="收藏此單字">
+              <i data-lucide="star" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="p-6 sm:p-8 space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div class="flex items-baseline gap-3 flex-wrap">
+                <h2 id="cardWordText" class="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900">abide</h2>
+                <span id="cardPhoneticText" class="text-lg font-mono text-slate-500">/əˈbaɪd/</span>
+                <span id="cardPosBadge" class="px-2.5 py-0.5 text-xs font-bold rounded-md bg-slate-100 text-slate-700 border border-slate-300">v.</span>
+              </div>
+              <p id="cardSrsMetaText" class="text-xs text-slate-400 mt-1.5">目前狀態：尚未學習（翻開卡片並選擇下方熟悉度後，即加入「已背單字池」供測驗與造句使用）</p>
+            </div>
+
+            <div class="flex items-center gap-2 shrink-0">
+              <button onclick="speakCurrentWord('en-US')" class="px-4 py-2.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs sm:text-sm font-bold flex items-center gap-1.5 transition">
+                <i data-lucide="volume-2" class="w-4 h-4"></i>
+                <span>美式發音</span>
+              </button>
+              <button onclick="speakCurrentWord('en-GB')" class="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition">
+                <span>英式發音</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-indigo-700">📌 學習例句（先讀例句猜猜看這個字的意思）：</span>
+              <button onclick="speakCurrentExample()" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1">
+                🔊 朗讀整句
+              </button>
+            </div>
+            <p id="cardExampleEn" class="text-base sm:text-lg font-medium text-slate-800 leading-relaxed"></p>
+          </div>
+
+          <div id="cardFrontPrompt" class="py-6 px-4 rounded-2xl bg-indigo-50/50 border-2 border-dashed border-indigo-200 flex flex-col items-center justify-center text-center space-y-3">
+            <p class="text-xs sm:text-sm font-semibold text-slate-700">在心裡想好意思了嗎？（就算完全沒看過也沒關係，直接翻開學起來！）</p>
+            <button id="flipCardBtn" onclick="revealCardAnswer()" class="px-8 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm sm:text-base shadow-md flex items-center gap-2 transition transform active:scale-95">
+              <span>👉 點此翻開中文解答與必背搭配詞 (或按空白鍵)</span>
+            </button>
+          </div>
+
+          <div id="cardBackAnswer" class="hidden space-y-5 pt-2 border-t border-slate-200">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 rounded-2xl bg-emerald-50/80 border border-emerald-200">
+                <span class="text-xs font-bold text-emerald-800">✅ 中文意思與例句翻譯</span>
+                <p id="cardMeaningZh" class="text-2xl font-extrabold text-slate-900 mt-1"></p>
+                <p id="cardExampleZh" class="text-xs sm:text-sm text-slate-700 mt-2 leading-relaxed"></p>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-amber-50/80 border border-amber-200">
+                <span class="text-xs font-bold text-amber-900">🧩 字根字首記憶法（幫你秒記不死背）</span>
+                <p id="cardEtymology" class="text-sm sm:text-base font-bold text-slate-900 mt-1"></p>
+                <p class="text-xs text-slate-600 mt-2">理解單字的結構拆解，遺忘速度會比死背字母慢 10 倍。</p>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-slate-900 text-white space-y-2.5">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="text-xs font-bold text-indigo-300">🔗 必背高頻搭配詞（點擊可聽發音，考試與寫作直接整組套用）：</span>
+                <button onclick="sendCurrentWordToStudio()" class="px-3 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white transition">
+                  用這個字去造句練習 →
+                </button>
+              </div>
+              <div id="cardCollocationsList" class="flex flex-wrap gap-2 pt-1"></div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-indigo-50/60 border border-indigo-100 space-y-3">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                <span class="text-xs sm:text-sm font-extrabold text-slate-900">👇 請選擇你對這個字的熟悉度（選完會自動加入「已背單字池」並切換下一張）：</span>
+                <span class="text-[11px] text-slate-500">鍵盤快捷鍵：按 1 / 2 / 3 / 4</span>
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                <button onclick="rateCardSM2(1)" class="p-3 rounded-xl border-2 border-rose-200 bg-white hover:bg-rose-50 text-left transition shadow-sm">
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs sm:text-sm font-extrabold text-rose-700">1. 不認識 / 忘記</span>
+                    <span id="sm2NextInt-1" class="text-[11px] font-bold px-1.5 py-0.5 rounded bg-rose-100 text-rose-800">明天複習</span>
+                  </div>
+                  <p class="text-[11px] text-slate-500 mt-1">第一次學或沒印象，明天優先幫你複習</p>
+                </button>
+
+                <button onclick="rateCardSM2(3)" class="p-3 rounded-xl border-2 border-amber-200 bg-white hover:bg-amber-50 text-left transition shadow-sm">
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs sm:text-sm font-extrabold text-amber-700">2. 有點卡</span>
+                    <span id="sm2NextInt-3" class="text-[11px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800">1 天後</span>
+                  </div>
+                  <p class="text-[11px] text-slate-500 mt-1">看例句才猜到，短期內再鞏固一次</p>
+                </button>
+
+                <button onclick="rateCardSM2(4)" class="p-3 rounded-xl border-2 border-emerald-200 bg-white hover:bg-emerald-50 text-left transition shadow-sm">
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs sm:text-sm font-extrabold text-emerald-700">3. 記得 / 學起來了</span>
+                    <span id="sm2NextInt-4" class="text-[11px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">1 天後</span>
+                  </div>
+                  <p class="text-[11px] text-slate-500 mt-1">依標準黃金記憶曲線排程 (1天→6天→15天)</p>
+                </button>
+
+                <button onclick="rateCardSM2(5)" class="p-3 rounded-xl border-2 border-indigo-200 bg-white hover:bg-indigo-50 text-left transition shadow-sm">
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs sm:text-sm font-extrabold text-indigo-700">4. 非常熟 / 秒答</span>
+                    <span id="sm2NextInt-5" class="text-[11px] font-bold px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-800">3 天後</span>
+                  </div>
+                  <p class="text-[11px] text-slate-500 mt-1">連搭配詞都很熟，直接拉長複習間隔</p>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+            <button onclick="navigateStudyCard(-1)" class="px-3 py-1.5 rounded-lg hover:bg-slate-100 font-semibold flex items-center gap-1">
+              ← 上一個單字
+            </button>
+            <div class="flex items-center gap-2">
+              <span>每日新字目標：</span>
+              <input id="quickDailyGoalInput" type="number" min="5" max="100" step="5" value="20" onchange="updateDailyGoalFromInput(this.value)" class="w-14 px-2 py-0.5 text-xs font-bold text-center rounded border border-slate-300" />
+              <span>字</span>
+            </div>
+            <button onclick="navigateStudyCard(1)" class="px-3 py-1.5 rounded-lg hover:bg-slate-100 font-semibold flex items-center gap-1">
+              跳過看下一個 →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <details class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+        <summary class="text-xs sm:text-sm font-bold text-slate-700 cursor-pointer flex items-center justify-between">
+          <span>📋 點此展開「目前待背單字清單」（共 <span id="queueListCountBadge">20 字</span>）</span>
+          <span class="text-xs text-indigo-600 font-semibold">點擊任一單字可直接跳轉</span>
+        </summary>
+        <div id="studyQueueList" class="mt-3 max-h-60 overflow-y-auto custom-scrollbar grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 pt-2 border-t border-slate-100"></div>
+      </details>
+
+    </section>
+
+    <!-- ==================== TAB 2: ② 測驗與造句活用 (Linked to Learned Words + Varied Cloze + AI Coach) ==================== -->
+    <section id="tab-practice" class="tab-panel hidden space-y-6">
+
+      <!-- Top Bar: Learned Word Pool Linkage Control -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-3">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-800">已連動你的學習紀錄</span>
+              <h3 class="text-sm sm:text-base font-extrabold text-slate-900">
+                目前已背過的單字池：<span id="practiceLearnedCountText" class="text-indigo-600">0</span> 字
+              </h3>
+            </div>
+            <p class="text-xs text-slate-500">
+              下方的「克漏字測驗」與「造句練習」預設<strong>只會從你當天或之前背過（已評分）的單字中出題</strong>，確保學完馬上活用！
+            </p>
+          </div>
+
+          <div class="flex items-center gap-2 shrink-0">
+            <label for="practicePoolSelect" class="text-xs font-bold text-slate-600">出題範圍：</label>
+            <select id="practicePoolSelect" onchange="onPracticePoolChange()" class="px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-bold bg-indigo-50 text-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <option value="learned">🎯 只考我背過的單字 (推薦)</option>
+              <option value="all">📖 擴充考全部 60 字題庫</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Learned Words Chips Preview -->
+        <div id="practiceLearnedChipsBox" class="pt-2 border-t border-slate-100 flex flex-wrap items-center gap-1.5 text-xs"></div>
+      </div>
+
+      <!-- Empty State Warning When 0 Words Learned in "learned" mode -->
+      <div id="practiceEmptyWarning" class="hidden bg-amber-50 border-2 border-dashed border-amber-300 rounded-2xl p-6 text-center space-y-3">
+        <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 mx-auto flex items-center justify-center font-extrabold text-xl">!</div>
+        <h4 class="text-base font-extrabold text-slate-900">你今天還沒有在「① 開始背單字」翻開並評分任何單字喔！</h4>
+        <p class="text-xs sm:text-sm text-slate-600 max-w-lg mx-auto leading-relaxed">
+          為了讓測驗與造句 100% 貼合你的進度，系統會等待你在「① 開始背單字」至少背過 1 個單字後，才針對那些單字出題。
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-3 pt-1">
+          <button onclick="switchTab('study')" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-extrabold shadow-sm transition">
+            👉 先去「① 開始背單字」背幾個單字
+          </button>
+          <button onclick="switchPracticeToAllMode()" class="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 text-xs sm:text-sm font-bold transition">
+            ⚡ 先切換為「考全部題庫」直接試玩
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Practice Grid -->
+      <div id="practiceMainGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- Left: Mode A - Varied Sentence Collocation Cloze Quiz (No Chinese before answering!) -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-5 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div>
+                <span class="text-xs font-bold text-indigo-600">練習一：全新情境句子 × 作答前隱藏中譯</span>
+                <h3 class="text-lg font-extrabold text-slate-900 mt-0.5">情境變化克漏字測驗</h3>
+              </div>
+              <div class="flex items-center gap-2">
+                <select id="quizLevelSelect" onchange="generateNextClozeQuestion()" class="px-2.5 py-1 rounded-lg border border-slate-300 text-xs font-semibold bg-white">
+                  <option value="all">L5 + L6 混合</option>
+                  <option value="5">僅考 Level 5</option>
+                  <option value="6">僅考 Level 6</option>
+                </select>
+                <span id="quizScoreBadge" class="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold">答對 0 / 0</span>
+              </div>
+            </div>
+
+            <!-- Question Box -->
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+              <div class="flex items-center justify-between text-xs text-slate-500 flex-wrap gap-1">
+                <span id="clozeThemeTag" class="font-semibold text-indigo-700">主題：社會與政經</span>
+                <span id="clozeTranslationLockBadge" class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 font-semibold text-[11px]">🔒 作答前隱藏中譯（請從英文上下文推敲）</span>
+                <span id="clozeCollocationHint" class="hidden px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-medium">搭配詞提示</span>
+              </div>
+              <p id="clozeSentenceEn" class="text-base sm:text-lg font-bold text-slate-900 leading-relaxed"></p>
+              <!-- Hidden before answering! Revealed only after user selects an option -->
+              <p id="clozeSentenceZh" class="hidden text-xs sm:text-sm font-medium text-indigo-900 bg-indigo-50/80 p-3 rounded-xl border border-indigo-100"></p>
+            </div>
+
+            <div id="clozeOptionsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+            <div id="clozeFeedbackBox" class="hidden p-4 rounded-xl border text-xs sm:text-sm space-y-2"></div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-500">使用與單字卡不同的全新例句，考驗真實語感！</span>
+            <button onclick="generateNextClozeQuestion()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold flex items-center gap-1.5 transition">
+              <span>換下一題 →</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Mode B - Active Sentence Studio + AI Diagnostic Coach -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-5 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div>
+                <span class="text-xs font-bold text-emerald-600">練習二：針對已背單字造句 × AI 寫作批改</span>
+                <h3 class="text-lg font-extrabold text-slate-900 mt-0.5">單字造句與 AI 診斷工作坊</h3>
+              </div>
+              <button onclick="pickRandomStudioWords()" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1 transition">
+                <span>🎲 從已背單字換一組</span>
+              </button>
+            </div>
+
+            <p class="text-xs text-slate-600 leading-relaxed">
+              請從下方<strong>你背過的單字</strong>中挑 1～3 個字寫出一個英文句子。點擊<strong>「儲存並請 AI 批改」</strong>後，AI 教練會針對你的<strong>介系詞搭配、詞性變化、句型結構</strong>給出具體改進建議與母語級潤飾範本：
+            </p>
+
+            <div id="studioTargetWordsGrid" class="grid grid-cols-1 sm:grid-cols-3 gap-2.5"></div>
+
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <label for="studioSentenceInput" class="text-xs font-bold text-slate-700">輸入你的英文造句：</label>
+                <button onclick="insertStudioSampleSentence()" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800">填入造句範例測試批改</button>
+              </div>
+              <textarea id="studioSentenceInput" rows="3" oninput="checkStudioWordUsage()" placeholder="試著用上方你剛背過的單字造一個句子（故意漏掉介系詞或寫簡短句，看看 AI 怎麼幫你改進）..." class="w-full p-3.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+              <div class="flex items-center justify-between text-xs pt-1">
+                <span id="studioMatchStatus" class="font-semibold text-slate-500">目前已用到目標單字：0 / 3</span>
+                <button onclick="saveStudioSentence()" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm flex items-center gap-1.5 shadow-sm transition">
+                  <span>✨ 儲存造句並請 AI 批改診斷</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Latest AI Feedback Card (Appears immediately upon saving!) -->
+            <div id="latestAiFeedbackBox" class="hidden p-4 rounded-2xl bg-indigo-950 text-white space-y-3 shadow-md"></div>
+
+            <div class="pt-3 border-t border-slate-100 space-y-2">
+              <div class="flex items-center justify-between">
+                <h4 class="text-xs font-extrabold text-slate-800">我的造句與 AI 批改紀錄本</h4>
+                <span id="studioLogCount" class="text-xs text-slate-400">0 筆紀錄</span>
+              </div>
+              <div id="studioSavedLogList" class="max-h-60 overflow-y-auto custom-scrollbar space-y-2.5 pr-1"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: ③ 複習日曆與進度 ==================== -->
+    <section id="tab-schedule" class="tab-panel hidden space-y-6">
+      <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs sm:text-sm text-amber-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <strong>🗓️ 你的複習排程是怎麼運作的？</strong><br>
+          當你在「① 開始背單字」翻開卡片並點選熟悉度後，系統就會自動把那些單字排進未來 14 天的日曆中！你可以點擊右側的<strong>「模擬到明天 (+1天)」</strong>測試看看。
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <button onclick="advanceSimulatedDay()" class="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold shadow-sm transition">
+            ⏩ 模擬到明天 (+1天)
+          </button>
+          <button onclick="resetAllProgressModal()" class="px-3 py-2 rounded-xl bg-white hover:bg-rose-50 text-rose-700 border border-rose-200 text-xs font-bold transition">
+            重置所有進度
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+          <h3 class="text-base font-extrabold text-slate-900">單字記憶階段分佈</h3>
+          <div class="relative h-56 w-full">
+            <canvas id="masteryDoughnutCanvas"></canvas>
+          </div>
+          <div id="masteryLegendBox" class="grid grid-cols-2 gap-2 text-xs"></div>
+        </div>
+
+        <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+          <div>
+            <h3 class="text-base font-extrabold text-slate-900">未來 14 天到期複習預測日曆</h3>
+            <p class="text-xs text-slate-500 mt-0.5">顯示每一天預計有多少個你學過的舊單字需要回頭複習</p>
+          </div>
+          <div class="relative h-64 w-full">
+            <canvas id="forecastBarCanvas"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: ④ 單字庫管理 ==================== -->
+    <section id="tab-bank" class="tab-panel hidden space-y-6">
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div>
+            <h3 class="text-lg font-extrabold text-slate-900">5000–7000 單字總表（可自訂新增或批次匯入）</h3>
+            <p class="text-xs text-slate-500">內建 60 個大考中心第五級與第六級核心代表單字，你可以隨時點擊「新增 / 批次匯入單字」加入更多單字。</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="openAddWordModal()" class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition">
+              <span>＋ 新增 / 批次匯入單字</span>
+            </button>
+            <button onclick="exportProgressJSON()" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1 transition">
+              <span>下載進度備份</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
+          <input id="bankSearchInput" type="text" oninput="renderWordBankTable()" placeholder="搜尋單字、中文或搭配詞..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+
+          <select id="bankLevelFilter" onchange="renderWordBankTable()" class="px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white">
+            <option value="all">所有級別 (Level 5 + 6)</option>
+            <option value="5">Level 5 (5000 單)</option>
+            <option value="6">Level 6 (6000–7000 單)</option>
+          </select>
+
+          <select id="bankThemeFilter" onchange="renderWordBankTable()" class="px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white">
+            <option value="all">所有主題分類</option>
+            <option value="社會與政經">社會與政經</option>
+            <option value="學術與科學">學術與科學</option>
+            <option value="心理與行為">心理與行為</option>
+            <option value="環境與自然">環境與自然</option>
+            <option value="商務與溝通">商務與溝通</option>
+          </select>
+
+          <select id="bankStatusFilter" onchange="renderWordBankTable()" class="px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white">
+            <option value="all">所有學習狀態</option>
+            <option value="new">尚未學習 (New)</option>
+            <option value="learning">短期鞏固中 (&lt;7天)</option>
+            <option value="mastered">長期熟練 (≥7天)</option>
+            <option value="starred">星號收藏</option>
+          </select>
+        </div>
+
+        <div class="overflow-x-auto custom-scrollbar border border-slate-200 rounded-xl">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase">
+                <th class="py-3 px-4">單字 / 發音</th>
+                <th class="py-3 px-3">級別 / 主題</th>
+                <th class="py-3 px-4">中文語意與字根拆解</th>
+                <th class="py-3 px-4">必背搭配詞</th>
+                <th class="py-3 px-3">目前記憶狀態</th>
+                <th class="py-3 px-3 text-right">操作</th>
+              </tr>
+            </thead>
+            <tbody id="wordBankTableBody" class="divide-y divide-slate-100 text-xs sm:text-sm"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 5: ⑤ 記憶曲線與試算 ==================== -->
+    <section id="tab-science" class="tab-panel hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+            <div>
+              <span class="text-xs font-bold text-indigo-600">艾賓浩斯 (1885) & Murre & Dros (2015) 實證數據</span>
+              <h3 class="text-lg font-extrabold text-slate-900">黃金記憶曲線：不複習 vs. 間隔重複留存率</h3>
+            </div>
+            <select id="meaningModeSelect" onchange="updateEbbinghausChart()" class="px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs font-semibold bg-white">
+              <option value="srs">對比：完整間隔複習 (第1, 3, 7, 14, 30天)</option>
+              <option value="context">對比：有看例句但不複習</option>
+              <option value="raw">只看死背不複習曲線</option>
+            </select>
+          </div>
+
+          <p class="text-xs text-slate-600 leading-relaxed">
+            如果不複習，學完單字 <strong>20 分鐘後會忘記 42%</strong>、<strong>1 天後忘記 67%</strong>（只剩 33%）。但只要在忘光前（第 1、3、7、14、30 天）進行主動回想測試，記憶曲線就會維持在 85%–95% 高檔：
+          </p>
+
+          <div class="relative h-64 w-full">
+            <canvas id="ebbinghausCanvas"></canvas>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="border-b border-slate-100 pb-3">
+              <span class="text-xs font-bold text-emerald-600">5000–7000 單進度規劃</span>
+              <h3 class="text-lg font-extrabold text-slate-900">每日背單字與複習量試算器</h3>
+            </div>
+
+            <div class="space-y-3">
+              <div>
+                <div class="flex justify-between text-xs font-bold mb-1">
+                  <span class="text-slate-700">目標背誦總字數 (Level 5–6)：</span>
+                  <span class="text-indigo-600"><span id="calcTotalWordsVal">2000</span> 字</span>
+                </div>
+                <input id="calcTotalWordsSlider" type="range" min="500" max="2160" step="20" value="2000" oninput="runWorkloadCalculator()" class="w-full accent-indigo-600 cursor-pointer" />
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-bold mb-1">
+                  <span class="text-slate-700">每天新背單字數 (推薦 20–30 字)：</span>
+                  <span class="text-indigo-600">每天 <span id="calcDailyNewVal">20</span> 個新字</span>
+                </div>
+                <input id="calcDailyNewSlider" type="range" min="10" max="60" step="5" value="20" oninput="runWorkloadCalculator()" class="w-full accent-indigo-600 cursor-pointer" />
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-bold mb-1">
+                  <span class="text-slate-700">複習記憶正確率：</span>
+                  <span class="text-emerald-600"><span id="calcAccuracyVal">85</span>%</span>
+                </div>
+                <input id="calcAccuracySlider" type="range" min="70" max="95" step="5" value="85" oninput="runWorkloadCalculator()" class="w-full accent-emerald-600 cursor-pointer" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2.5">
+              <div class="p-3 rounded-xl bg-indigo-50 border border-indigo-100">
+                <span class="text-[11px] text-indigo-700 font-semibold block">背完一輪所需天數</span>
+                <strong id="calcOutDays" class="text-lg font-extrabold text-slate-900">100 天</strong>
+                <span id="calcOutMonths" class="text-[11px] text-slate-500 block">約 3.3 個月</span>
+              </div>
+              <div class="p-3 rounded-xl bg-amber-50 border border-amber-100">
+                <span class="text-[11px] text-amber-800 font-semibold block">穩定後每日舊字複習</span>
+                <strong id="calcOutDailyReviews" class="text-lg font-extrabold text-slate-900">約 48 字/天</strong>
+                <span id="calcOutRatio" class="text-[11px] text-amber-700 block">新舊比 1 : 2.4</span>
+              </div>
+              <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-100">
+                <span class="text-[11px] text-emerald-800 font-semibold block">每日總刷卡數 (新+舊)</span>
+                <strong id="calcOutTotalCards" class="text-lg font-extrabold text-slate-900">68 張/天</strong>
+              </div>
+              <div class="p-3 rounded-xl bg-purple-50 border border-purple-100">
+                <span class="text-[11px] text-purple-800 font-semibold block">預估每日時間</span>
+                <strong id="calcOutMinutes" class="text-lg font-extrabold text-slate-900">約 21 分鐘</strong>
+              </div>
+            </div>
+
+            <div class="relative h-36 w-full pt-1">
+              <canvas id="workloadSimCanvas"></canvas>
+            </div>
+          </div>
+
+          <button onclick="applyCalculatorGoalToStudy()" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold shadow-sm transition">
+            套用此每日新字數至「① 開始背單字」
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+        <a href="https://www.flashcardify.me/blog/ebbinghaus-forgetting-curve" target="_blank" rel="noopener noreferrer" class="p-3 rounded-xl bg-slate-50 hover:bg-indigo-50 border border-slate-200 transition block">
+          <strong class="text-indigo-700 block">📚 艾賓浩斯與主動提取研究</strong>
+          <span class="text-slate-600 mt-1 block">Karpicke & Roediger (2008) 證實主動回想測試可提升 150% 長期留存率。</span>
+        </a>
+        <a href="https://gnoseed.com/algorithms/sm2" target="_blank" rel="noopener noreferrer" class="p-3 rounded-xl bg-slate-50 hover:bg-indigo-50 border border-slate-200 transition block">
+          <strong class="text-emerald-700 block">⚙️ SuperMemo SM-2 演算法</strong>
+          <span class="text-slate-600 mt-1 block">Piotr Woźniak 提出的 1天 → 6天 → I×EF 動態間隔排程模型。</span>
+        </a>
+        <a href="https://www.ceec.edu.tw/SourceUse/ce37/5.pdf" target="_blank" rel="noopener noreferrer" class="p-3 rounded-xl bg-slate-50 hover:bg-indigo-50 border border-slate-200 transition block">
+          <strong class="text-purple-700 block">📖 大考中心官方分級字表</strong>
+          <span class="text-slate-600 mt-1 block">《高中英文參考詞彙表》第五級與第六級官方完整單字表 PDF。</span>
+        </a>
+        <a href="https://englishtop1.com/%E5%AD%B8%E6%B8%AC%E8%8B%B1%E6%96%87%E5%96%AE%E5%AD%97%E8%A6%81%E8%83%8C%E5%A4%9A%E5%B0%91%EF%BC%9F%E5%AD%97%E5%BD%99%E9%87%8F%E8%88%87%E6%BA%96%E5%82%99%E7%AF%84%E5%9C%8D%E6%95%B4%E7%90%86/" target="_blank" rel="noopener noreferrer" class="p-3 rounded-xl bg-slate-50 hover:bg-indigo-50 border border-slate-200 transition block">
+          <strong class="text-amber-700 block">🎯 搭配詞與三階段內化法</strong>
+          <span class="text-slate-600 mt-1 block">從認字、搭配詞語境到每週短文強迫輸出的實戰指南。</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal: Add / Bulk Import Words -->
+  <div id="addWordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-xl border border-slate-200 space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="text-lg font-extrabold text-slate-900">新增或批次匯入 5000–7000 單字</h3>
+        <button onclick="closeAddWordModal()" class="p-1 rounded-lg hover:bg-slate-100 text-slate-500">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs sm:text-sm">
+        <p class="text-slate-600">
+          每行一筆單字，格式：<code class="px-1.5 py-0.5 rounded bg-slate-100 text-indigo-700 font-mono">英文單字 | 詞性 | 中文解釋 | 常見搭配詞(逗號分隔) | 英文例句 | 級別(5或6)</code>
+        </p>
+        <textarea id="bulkImportTextarea" rows="5" placeholder="resilient | adj. | 有韌性的；能迅速復原的 | a resilient economy, resilient to stress | Children are often more resilient than adults realize. | 6" class="w-full p-3 rounded-xl border border-slate-300 font-mono text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+        <div class="flex items-center justify-between">
+          <button onclick="fillSampleImportLines()" class="text-xs font-semibold text-indigo-600 hover:underline">填入 5 個大考 Level 5–6 範例單字</button>
+          <div class="flex items-center gap-2">
+            <button onclick="closeAddWordModal()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">取消</button>
+            <button onclick="submitBulkImportWords()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold">確認匯入題庫</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Reset Confirmation -->
+  <div id="resetConfirmModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200 space-y-4">
+      <h3 class="text-base font-extrabold text-slate-900">確定要重置所有學習進度嗎？</h3>
+      <p class="text-xs text-slate-600 leading-relaxed">這會將所有單字恢復為「尚未學習（0 進度）」、待複習歸零，並回到第 1 天。</p>
+      <div class="flex justify-end gap-2">
+        <button onclick="closeResetModal()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">取消</button>
+        <button onclick="confirmResetAllProgress()" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold">確定重置歸零</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <script>
+    // ============================================================================
+    // 1. AUTHENTIC CEEC LEVEL 5 & LEVEL 6 VOCABULARY DATASET (60 WORDS)
+    // Each word has:
+    // - exampleEn / exampleZh (Used on Study Flashcard in Tab 1)
+    // - quizEn / quizZh (Brand-new varied sentence used ONLY in Cloze Quiz in Tab 2!)
+    // - prepRule (Used by the AI Sentence Diagnostic Coach to check collocation usage)
+    // ============================================================================
+    const INITIAL_VOCAB_BANK = [
+      // --- LEVEL 5 (30 Words) ---
+      {
+        id: "L5-01", word: "abide", phonetic: "/əˈbaɪd/", pos: "v.", level: 5, theme: "社會與政經",
+        meaning: "遵守；容忍", etymology: "a- (加強) + bide (停留、保持) → 堅守規定",
+        collocations: ["abide by the law", "abide by the rules", "abide by a decision"],
+        exampleEn: "All citizens must abide by the law regardless of their social status.",
+        exampleZh: "所有公民無論社會地位為何，都必須遵守法律。",
+        quizEn: "Players who refuse to abide by the referee's decision will be disqualified from the tournament.",
+        quizZh: "拒絕遵守裁判決定的選手將被取消錦標賽資格。",
+        prepRule: { requiredPrep: "by", tip: "abide 表示「遵守」時是不及物動詞，後面必須加上介系詞 by（如 abide by the rules / abide by the law）。" }
+      },
+      {
+        id: "L5-02", word: "abolish", phonetic: "/əˈbɑːlɪʃ/", pos: "vt.", level: 5, theme: "社會與政經",
+        meaning: "廢除；廢止（法律、制度、習俗）", etymology: "ab- (遠離) + olere (生長) → 使不再存在、廢除",
+        collocations: ["abolish slavery", "abolish the death penalty", "abolish outdated tax laws"],
+        exampleEn: "Many human rights groups have campaigned to abolish the death penalty.",
+        exampleZh: "許多人權團體發起運動呼籲廢除死刑。",
+        quizEn: "Abraham Lincoln issued the Emancipation Proclamation to abolish slavery across the nation.",
+        quizZh: "亞伯拉罕·林肯發表《解放奴隸宣言》以在全國廢除奴隸制度。",
+        prepRule: { forbiddenPrep: "away", tip: "abolish 是及物動詞，後面直接接「法律、制度或舊習俗」（如 abolish the tax / abolish slavery），不需加介系詞。" }
+      },
+      {
+        id: "L5-03", word: "abrupt", phonetic: "/əˈbrʌpt/", pos: "adj.", level: 5, theme: "心理與行為",
+        meaning: "突然的；唐突的；陡峭的", etymology: "ab- (離開) + rupt (斷裂，如 erupt) → 突然中斷",
+        collocations: ["come to an abrupt halt", "an abrupt change", "an abrupt manner"],
+        exampleEn: "The negotiations came to an abrupt end when both sides refused to compromise.",
+        exampleZh: "當雙方都拒絕妥協時，談判戛然而止。",
+        quizEn: "His abrupt departure from the board meeting left all his colleagues baffled.",
+        quizZh: "他突然離開董事會會議，讓所有同事感到錯愕不解。",
+        prepRule: { tip: "abrupt 常搭配名詞 end / halt / change / departure，例如 come to an abrupt halt（突然停止）。" }
+      },
+      {
+        id: "L5-04", word: "abundant", phonetic: "/əˈbʌndənt/", pos: "adj.", level: 5, theme: "環境與自然",
+        meaning: "豐富的；充裕的；大量的", etymology: "ab- + unda (波浪) → 像波浪般湧出、充裕的",
+        collocations: ["abundant natural resources", "abundant evidence", "in abundant supply"],
+        exampleEn: "The tropical rainforest is home to abundant wildlife and rare plant species.",
+        exampleZh: "熱帶雨林擁有豐富的野生動物與稀有植物物種。",
+        quizEn: "There is abundant evidence that regular sleep improves long-term memory consolidation.",
+        quizZh: "有充足的證據顯示規律睡眠能改善長期記憶鞏固。",
+        prepRule: { tip: "abundant 可修飾 resources / evidence / supply，或用 be abundant in（富於…）。" }
+      },
+      {
+        id: "L5-05", word: "acknowledge", phonetic: "/əkˈnɑːlɪdʒ/", pos: "vt.", level: 5, theme: "商務與溝通",
+        meaning: "承認；致謝；確認收到", etymology: "ac- (向) + knowledge (知識、認知) → 公開承認",
+        collocations: ["acknowledge a mistake", "acknowledge receipt of", "widely acknowledged as"],
+        exampleEn: "The hospital acknowledged that a scheduling error had delayed the patient's treatment.",
+        exampleZh: "醫院承認排程錯誤延誤了病患的治療。",
+        quizEn: "Please sign this form to acknowledge receipt of the confidential package.",
+        quizZh: "請簽署此表格以確認收到該機密包裹。",
+        prepRule: { tip: "acknowledge 後面若接動作，要用動名詞 V-ing（如 acknowledge making a mistake）或 that 子句，不可直接接 to V。" }
+      },
+      {
+        id: "L5-06", word: "alter", phonetic: "/ˈɔːltər/", pos: "v.", level: 5, theme: "學術與科學",
+        meaning: "改變；修改；改動", etymology: "alter (其他的，如 alternative) → 使變成另一種樣子",
+        collocations: ["alter the course of history", "alter plans", "genetically altered"],
+        exampleEn: "Rising global temperatures are beginning to alter marine ecosystems permanently.",
+        exampleZh: "全球氣溫上升正開始永久改變海洋生態系統。",
+        quizEn: "Due to the sudden typhoon warning, we had to alter our travel itinerary at the last minute.",
+        quizZh: "由於突如其來的颱風警報，我們不得不在最後一刻更改旅遊行程。",
+        prepRule: { tip: "alter 指局部修改或改變方向，常搭配 alter plans / alter the course of。" }
+      },
+      {
+        id: "L5-07", word: "ample", phonetic: "/ˈæmpl/", pos: "adj.", level: 5, theme: "商務與溝通",
+        meaning: "充足的；寬敞的；綽綽有餘的", etymology: "源自拉丁文 amplus (寬廣的、豐盛的)",
+        collocations: ["ample opportunity", "ample evidence", "ample parking space"],
+        exampleEn: "Applicants will have ample time to review the contract before signing it.",
+        exampleZh: "申請人在簽署合約前會有充足的時間審閱內容。",
+        quizEn: "The new convention center provides ample space for international tech exhibitions.",
+        quizZh: "這座新會議中心為國際科技展覽提供了充裕的空間。",
+        prepRule: { tip: "ample 常用於修飾抽象或空間名詞，如 ample time / ample opportunity / ample space / ample room。" }
+      },
+      {
+        id: "L5-08", word: "asset", phonetic: "/ˈæset/", pos: "n.", level: 5, theme: "商務與溝通",
+        meaning: "資產；有價值的人事物；優勢", etymology: "源自法文 assez (足夠清償債務之物) → 資產",
+        collocations: ["a valuable asset to the team", "financial assets", "intellectual assets"],
+        exampleEn: "Her fluency in three languages proved to be a tremendous asset in international trade.",
+        exampleZh: "她流利掌握三種語言，在國際貿易中證明是一項極大的資產。",
+        quizEn: "A strong sense of empathy is a great asset to anyone working in healthcare.",
+        quizZh: "強烈的同理心對任何從事醫療照護工作的人來說都是極大的優勢資產。",
+        prepRule: { requiredPrep: "to", tip: "表示「對某人／某團隊而言是寶貴資產」時，常搭配介系詞 to（an asset to the company）。" }
+      },
+      {
+        id: "L5-09", word: "beneficial", phonetic: "/ˌbenɪˈfɪʃl/", pos: "adj.", level: 5, theme: "環境與自然",
+        meaning: "有益的；有利的", etymology: "bene- (好) + fic (做) + -ial → 帶來好處的",
+        collocations: ["mutually beneficial", "beneficial to health", "have a beneficial effect on"],
+        exampleEn: "Regular aerobic exercise is highly beneficial to both cardiovascular and mental health.",
+        exampleZh: "規律的有氧運動對心血管與心理健康都極為有益。",
+        quizEn: "The trade agreement is expected to be mutually beneficial to both nations.",
+        quizZh: "這項貿易協定預計將對兩國帶來互利雙贏的效益。",
+        prepRule: { requiredPrep: "to", tip: "be beneficial to + N（對…有益）是學測與寫作最常考的固定介系詞搭配！" }
+      },
+      {
+        id: "L5-10", word: "cautious", phonetic: "/ˈkɔːʃəs/", pos: "adj.", level: 5, theme: "心理與行為",
+        meaning: "謹慎的；小心的", etymology: "caut (當心、防備) + -ious → 充滿戒心的",
+        collocations: ["remain cautious about", "a cautious approach", "cautious optimism"],
+        exampleEn: "Investors remain cautious about putting money into volatile tech startups.",
+        exampleZh: "投資人對於將資金投入波動劇烈的科技新創公司仍保持謹慎。",
+        quizEn: "Medical experts expressed cautious optimism regarding the results of the new vaccine trial.",
+        quizZh: "醫學專家對新疫苗試驗的結果表達了審慎樂觀的態度。",
+        prepRule: { requiredPrep: "about", tip: "表示「對某事保持謹慎」時，常搭配 be cautious about + N/V-ing。" }
+      },
+      {
+        id: "L5-11", word: "cite", phonetic: "/saɪt/", pos: "vt.", level: 5, theme: "學術與科學",
+        meaning: "引用；引述；舉例說明；傳喚", etymology: "源自拉丁文 citare (召喚、引證)",
+        collocations: ["cite sources", "cite an example", "cite personal reasons"],
+        exampleEn: "The researcher cited several peer-reviewed studies to support her hypothesis.",
+        exampleZh: "該研究人員引用了數篇同儕審查研究來支持她的假設。",
+        quizEn: "The mayor resigned unexpectedly, citing health concerns and family obligations.",
+        quizZh: "市長出乎意料地辭職，並引述健康考量與家庭責任作為原因。",
+        prepRule: { tip: "cite 是及物動詞，常搭配 cite an example（舉例）或 cite A as B（引用 A 作為 B 的證據）。" }
+      },
+      {
+        id: "L5-12", word: "combat", phonetic: "/ˈkɑːmbæt/", pos: "vt./n.", level: 5, theme: "社會與政經",
+        meaning: "打擊；對抗；戰鬥", etymology: "com- (共同、對抗) + bat (打擊，如 battle)",
+        collocations: ["combat climate change", "combat inflation", "close combat"],
+        exampleEn: "The central bank raised interest rates in an effort to combat rising inflation.",
+        exampleZh: "中央銀行調升利率以對抗不斷攀升的通貨膨脹。",
+        quizEn: "International cooperation is essential to combat cybercrime and online fraud.",
+        quizZh: "國際合作對於打擊網路犯罪與線上詐騙至關重要。",
+        prepRule: { tip: "combat 當動詞表示「對抗、打擊」時是及物動詞，直接接問題名詞（如 combat crime / combat climate change），不必加 with。" }
+      },
+      {
+        id: "L5-13", word: "compel", phonetic: "/kəmˈpel/", pos: "vt.", level: 5, theme: "心理與行為",
+        meaning: "強迫；迫使；使不得不", etymology: "com- (加強) + pel (推、驅使，如 propel) → 強力推動",
+        collocations: ["compel someone to do", "feel compelled to explain", "compelling evidence"],
+        exampleEn: "Severe drought compelled thousands of farmers to abandon their parched land.",
+        exampleZh: "嚴重乾旱迫使數千名農民放棄乾涸的土地。",
+        quizEn: "Witnessing the injustice firsthand, she felt compelled to speak out for the victims.",
+        quizZh: "親眼目睹這場不公後，她覺得自己不得不為受害者發聲。",
+        prepRule: { requiredPrep: "to", tip: "compel 的核心句型是 compel sb. to V，或被動 be/feel compelled to V（覺得不得不…）。" }
+      },
+      {
+        id: "L5-14", word: "comprehend", phonetic: "/ˌkɑːmprɪˈhend/", pos: "vt.", level: 5, theme: "學術與科學",
+        meaning: "理解；領悟", etymology: "com- (完全) + prehend (抓住) → 完全掌握概念",
+        collocations: ["fully comprehend", "difficult to comprehend", "beyond comprehension"],
+        exampleEn: "It is difficult for laypeople to fully comprehend the scale of the universe.",
+        exampleZh: "外行人很難完全理解宇宙的浩瀚規模。",
+        quizEn: "The toddler was too young to comprehend why her parents were worried.",
+        quizZh: "這個幼童還太小，無法理解為什麼父母會擔心。",
+        prepRule: { tip: "comprehend 是及物動詞，常與副詞 fully / scarcely 連用，後面可接名詞或 how/why 子句。" }
+      },
+      {
+        id: "L5-15", word: "compromise", phonetic: "/ˈkɑːmprəmaɪz/", pos: "n./v.", level: 5, theme: "商務與溝通",
+        meaning: "妥協；折衷；危及（安全或名譽）", etymology: "com- (共同) + promise (承諾) → 雙方互相讓步許諾",
+        collocations: ["reach a compromise", "make compromises", "compromise safety standards"],
+        exampleEn: "After hours of heated debate, the union and management finally reached a compromise.",
+        exampleZh: "經過數小時的激烈辯論後，工會與資方終於達成妥協。",
+        quizEn: "We will never compromise user privacy for short-term commercial profit.",
+        quizZh: "我們絕不會為了短期商業利益而危及（犧牲）用戶隱私。",
+        prepRule: { tip: "名詞常搭配 reach / make a compromise；及物動詞則指「危及、妥協犧牲」（compromise safety / privacy）。" }
+      },
+      {
+        id: "L5-16", word: "conceal", phonetic: "/kənˈsiːl/", pos: "vt.", level: 5, theme: "心理與行為",
+        meaning: "隱藏；隱瞞；遮蔽", etymology: "con- (完全) + celare (隱藏) → 徹底藏起來",
+        collocations: ["conceal the truth", "conceal one's disappointment", "a concealed weapon"],
+        exampleEn: "He tried hard to conceal his nervousness during the job interview.",
+        exampleZh: "他在工作面試期間努力隱藏自己的緊張情緒。",
+        quizEn: "The suspect attempted to conceal crucial evidence from the investigators.",
+        quizZh: "嫌犯試圖向調查人員隱瞞關鍵證據。",
+        prepRule: { tip: "conceal A from B 表示「向 B 隱瞞 A」，常搭配 conceal the truth / conceal one's feelings。" }
+      },
+      {
+        id: "L5-17", word: "confront", phonetic: "/kənˈfrʌnt/", pos: "vt.", level: 5, theme: "心理與行為",
+        meaning: "面對；正視（困難）；與…對質", etymology: "con- (一起) + front (前額、正面) → 正面迎擊",
+        collocations: ["confront a problem", "be confronted with", "confront an accuser"],
+        exampleEn: "To overcome your fear, you must confront the issue directly rather than avoiding it.",
+        exampleZh: "要克服恐懼，你必須直接面對問題而非逃避。",
+        quizEn: "Many developed nations are now confronted with the challenge of a rapidly aging population.",
+        quizZh: "許多已開發國家如今正遭逢人口快速高齡化的挑戰。",
+        prepRule: { tip: "主動語態直接用 confront + 問題；若用被動語態則搭配 with：be confronted with（面臨…挑戰）。" }
+      },
+      {
+        id: "L5-18", word: "conserve", phonetic: "/kənˈsɜːrv/", pos: "vt.", level: 5, theme: "環境與自然",
+        meaning: "節約；保護；保育", etymology: "con- (共同) + servare (守護、保持) → 妥善保存",
+        collocations: ["conserve energy", "conserve water", "conserve wildlife habitats"],
+        exampleEn: "Residents are urged to conserve water during the dry summer months.",
+        exampleZh: "當局呼籲居民在乾燥的夏季月份節約用水。",
+        quizEn: "Switching off unused lights is the simplest way to conserve electricity at home.",
+        quizZh: "隨手關掉不用的電燈是在家節約用電最簡單的方法。",
+        prepRule: { tip: "conserve 強調「珍惜不浪費、保育自然資源」，常搭配 conserve water / energy / nature。" }
+      },
+      {
+        id: "L5-19", word: "contaminate", phonetic: "/kənˈtæmɪneɪt/", pos: "vt.", level: 5, theme: "環境與自然",
+        meaning: "污染；弄髒；毒害", etymology: "con- + tangere (接觸) → 接觸不潔之物而污染",
+        collocations: ["contaminate drinking water", "contaminated food", "toxic contamination"],
+        exampleEn: "Industrial waste from the chemical plant threatened to contaminate the local river.",
+        exampleZh: "化工廠排放的工業廢棄物威脅並可能污染當地河川。",
+        quizEn: "Improper food storage can easily contaminate raw meat with harmful bacteria.",
+        quizZh: "不當的食物保存方式很容易使生肉受到有害細菌污染。",
+        prepRule: { tip: "常搭配 contaminate A with B 或被動 be contaminated with/by（受到…污染）。" }
+      },
+      {
+        id: "L5-20", word: "contemporary", phonetic: "/kənˈtempəreri/", pos: "adj./n.", level: 5, theme: "學術與科學",
+        meaning: "當代的；現代的；同時代的人", etymology: "con- (共同) + tempor (時間) + -ary → 同一時代的",
+        collocations: ["contemporary society", "contemporary art", "contemporary literature"],
+        exampleEn: "The museum's new wing showcases works by contemporary Taiwanese artists.",
+        exampleZh: "博物館的新展館展示了當代台灣藝術家的作品。",
+        quizEn: "In contemporary society, digital literacy is just as important as traditional reading skills.",
+        quizZh: "在當代社會中，數位素養與傳統閱讀能力同樣重要。",
+        prepRule: { tip: "常搭配 in contemporary society（在當代社會中）或 contemporary art/literature。" }
+      },
+      {
+        id: "L5-21", word: "curb", phonetic: "/kɜːrb/", pos: "vt./n.", level: 5, theme: "社會與政經",
+        meaning: "抑制；遏止；路緣", etymology: "源自拉丁文 curvus (彎曲、勒馬繩) → 控制住",
+        collocations: ["curb carbon emissions", "curb inflation", "put a curb on"],
+        exampleEn: "Strict new regulations were introduced to curb plastic waste in coastal cities.",
+        exampleZh: "當局推出了嚴格的新法規以遏止沿海城市的塑膠廢棄物。",
+        quizEn: "Higher taxes on sugary drinks were implemented to curb childhood obesity.",
+        quizZh: "政府對含糖飲料課徵更高稅率，藉此遏止兒童肥胖問題。",
+        prepRule: { tip: "curb 是學測作文極佳的高分動詞，用來取代 stop/reduce，直接接負面現象：curb inflation / emissions / crime。" }
+      },
+      {
+        id: "L5-22", word: "endeavor", phonetic: "/ɪnˈdevər/", pos: "n./vi.", level: 5, theme: "學術與科學",
+        meaning: "努力；盡力；嘗試", etymology: "en- (使) + devoir (職責) → 盡全力完成使命",
+        collocations: ["scientific endeavor", "endeavor to improve", "make every endeavor"],
+        exampleEn: "Space exploration is one of humanity's most ambitious scientific endeavors.",
+        exampleZh: "太空探索是人類最具雄心的科學努力之一。",
+        quizEn: "Our customer service team will endeavor to respond to all inquiries within 24 hours.",
+        quizZh: "我們的客服團隊將盡力在 24 小時內回覆所有詢問。",
+        prepRule: { requiredPrep: "to", tip: "endeavor 當動詞時後面固定接不定詞：endeavor to V（盡力去做…）。" }
+      },
+      {
+        id: "L5-23", word: "flourish", phonetic: "/ˈflɜːrɪʃ/", pos: "vi.", level: 5, theme: "環境與自然",
+        meaning: "繁榮；茂盛；興旺", etymology: "源自拉丁文 florere (開花，如 flower) → 蓬勃發展",
+        collocations: ["arts and culture flourish", "flourish in a warm climate", "a flourishing business"],
+        exampleEn: "Small independent bookstores have begun to flourish again in historic neighborhoods.",
+        exampleZh: "小型獨立書店開始在歷史街區再次蓬勃發展。",
+        quizEn: "Creative industries tend to flourish in cities that welcome diverse perspectives.",
+        quizZh: "創意產業往往在歡迎多元觀點的城市中蓬勃發展。",
+        prepRule: { requiredPrep: "in", tip: "flourish 是不及物動詞，常搭配介系詞 in（flourish in a free environment）。" }
+      },
+      {
+        id: "L5-24", word: "foster", phonetic: "/ˈfɔːstər/", pos: "vt./adj.", level: 5, theme: "社會與政經",
+        meaning: "促進；培養；寄養的", etymology: "源自古英文 fostrian (餵養、培育)",
+        collocations: ["foster creativity", "foster mutual understanding", "foster parents"],
+        exampleEn: "Cross-cultural exchange programs help foster mutual understanding among young people.",
+        exampleZh: "跨文化交流計畫有助於促進年輕人之間的相互理解。",
+        quizEn: "Good teachers encourage students to ask questions in order to foster independent thinking.",
+        quizZh: "優秀的老師鼓勵學生提問，以培養獨立思考的能力。",
+        prepRule: { tip: "foster 是寫作亮點動詞，後面直接接正向抽象名詞（foster creativity / trust / cooperation）。" }
+      },
+      {
+        id: "L5-25", word: "indispensable", phonetic: "/ˌɪndɪˈspensəbl/", pos: "adj.", level: 5, theme: "商務與溝通",
+        meaning: "不可或缺的；絕對必要的", etymology: "in- (不) + dispensable (可省去的) → 絕對少不了的",
+        collocations: ["indispensable to success", "an indispensable tool", "make oneself indispensable"],
+        exampleEn: "High-speed internet has become an indispensable part of modern remote work.",
+        exampleZh: "高速網路已成為現代遠距工作中不可或缺的一部分。",
+        quizEn: "Active recall is indispensable to building a strong long-term vocabulary.",
+        quizZh: "主動提取對於建立強大的長期字彙量是不可或缺的。",
+        prepRule: { requiredPrep: "to", tip: "be indispensable to + N / V-ing（對…是不可或缺的），注意 to 是介系詞！" }
+      },
+      {
+        id: "L5-26", word: "initiate", phonetic: "/ɪˈnɪʃieɪt/", pos: "vt.", level: 5, theme: "商務與溝通",
+        meaning: "發起；開創；啟動", etymology: "in- (進入) + ire (走) → 邁出第一步、啟動",
+        collocations: ["initiate a project", "initiate peace talks", "initiate reform"],
+        exampleEn: "The city council voted to initiate a comprehensive review of public transit safety.",
+        exampleZh: "市議會投票決定啟動一項針對大眾運輸安全的全面檢討。",
+        quizEn: "The two neighboring countries agreed to initiate formal peace talks next month.",
+        quizZh: "這兩個鄰國同意在下個月啟動正式和平談判。",
+        prepRule: { tip: "initiate 為及物動詞，常搭配 initiate a project / campaign / reform / talks。" }
+      },
+      {
+        id: "L5-27", word: "perceive", phonetic: "/pərˈsiːv/", pos: "vt.", level: 5, theme: "心理與行為",
+        meaning: "察覺；看待；視為；理解", etymology: "per- (完全) + capere (抓取) → 透過感官或心智領會",
+        collocations: ["perceive a threat", "be perceived as", "perceive a subtle change"],
+        exampleEn: "How we perceive stress can significantly influence our physical recovery.",
+        exampleZh: "我們如何看待壓力，會顯著影響我們的身體復原狀況。",
+        quizEn: "In many cultures, avoiding eye contact is often perceived as a sign of dishonesty.",
+        quizZh: "在許多文化中，避開眼神接觸往往被視為不誠實的表現。",
+        prepRule: { requiredPrep: "as", tip: "表示「把 A 視為 B」時，固定搭配 perceive A as B 或被動 be perceived as B。" }
+      },
+      {
+        id: "L5-28", word: "prevail", phonetic: "/prɪˈveɪl/", pos: "vi.", level: 5, theme: "社會與政經",
+        meaning: "盛行；獲勝；佔上風；說服", etymology: "pre- (在…之前) + valere (強壯、有價值) → 勝過",
+        collocations: ["justice will prevail", "prevail over difficulties", "prevailing wind"],
+        exampleEn: "Despite numerous setbacks, common sense and cooperation eventually prevailed.",
+        exampleZh: "儘管遭遇諸多挫折，常理與合作最終仍佔了上風。",
+        quizEn: "With determination and teamwork, the underdog team managed to prevail over the defending champions.",
+        quizZh: "憑藉決心與團隊合作，這支不被看好的隊伍成功戰勝了衛冕冠軍。",
+        prepRule: { requiredPrep: "over", tip: "prevail 是不及物動詞，表示「戰勝、勝過某對手或困難」時搭配 prevail over。" }
+      },
+      {
+        id: "L5-29", word: "sustain", phonetic: "/səˈsteɪn/", pos: "vt.", level: 5, theme: "環境與自然",
+        meaning: "維持；支撐；遭受（傷害或損失）", etymology: "sub- (在下方) + tenere (握住) → 在底下支撐住",
+        collocations: ["sustain economic growth", "sustain life", "sustain severe injuries"],
+        exampleEn: "Clean water and fertile soil are required to sustain agricultural production.",
+        exampleZh: "需要潔淨的水源與肥沃的土壤才能維持農業生產。",
+        quizEn: "Astronomers are searching for exoplanets that have enough atmosphere to sustain human life.",
+        quizZh: "天文學家正在尋找擁有足夠大氣層以維持人類生命的系外行星。",
+        prepRule: { tip: "sustain 除了「維持（growth / life）」，在新聞中也常指「遭受傷亡或損失」（sustain injuries / losses）。" }
+      },
+      {
+        id: "L5-30", word: "thrive", phonetic: "/θraɪv/", pos: "vi.", level: 5, theme: "環境與自然",
+        meaning: "茁壯成長；興盛；蓬勃發展", etymology: "源自古諾斯語 thrifask (抓住繁榮)",
+        collocations: ["thrive on challenge", "thrive in a competitive market", "thriving ecosystem"],
+        exampleEn: "Certain desert plants manage to thrive even under extreme heat and drought.",
+        exampleZh: "某些沙漠植物即使在極端高溫與乾旱下仍能茁壯生長。",
+        quizEn: "Some athletes actually thrive on high pressure and perform better in championship finals.",
+        quizZh: "有些運動員反而靠高壓茁壯，並在冠軍決賽中表現得更好。",
+        prepRule: { requiredPrep: "in", tip: "thrive 不及物，常搭配 thrive in（在某環境茁壯）或 thrive on（以某挑戰或壓力為樂而表現更好）。" }
+      },
+
+      // --- LEVEL 6 (30 Words) ---
+      {
+        id: "L6-01", word: "accelerate", phonetic: "/əkˈseləreɪt/", pos: "v.", level: 6, theme: "學術與科學",
+        meaning: "加速；促進；提前發生", etymology: "ac- (加強) + celer (快速的) + -ate → 使變快",
+        collocations: ["accelerate economic growth", "accelerate the aging process", "accelerate pace"],
+        exampleEn: "Artificial intelligence is expected to accelerate drug discovery in the coming decade.",
+        exampleZh: "人工智慧預計將在未來十年加速新藥研發的進程。",
+        quizEn: "Prolonged exposure to ultraviolet rays can accelerate skin aging significantly.",
+        quizZh: "長時間暴露在紫外線下會顯著加速皮膚老化。",
+        prepRule: { tip: "accelerate 可當及物或不及物動詞，常搭配 accelerate the pace of / accelerate growth。" }
+      },
+      {
+        id: "L6-02", word: "accommodate", phonetic: "/əˈkɑːmədeɪt/", pos: "vt.", level: 6, theme: "商務與溝通",
+        meaning: "容納；提供住宿；配合；調適", etymology: "ac- + com- + modus (方式、尺度) → 使符合需求",
+        collocations: ["accommodate up to 500 guests", "accommodate special needs", "accommodate changes"],
+        exampleEn: "The newly renovated conference hall can accommodate up to eight hundred participants.",
+        exampleZh: "新翻修的會議廳最多可容納八百名與會者。",
+        quizEn: "Our hotel is happy to accommodate guests with special dietary requirements.",
+        quizZh: "本飯店很樂意配合有特殊飲食需求的房客。",
+        prepRule: { tip: "注意拼寫是雙 c 雙 m（ac-com-mo-date），常指「容納人數」或「配合特殊需求（accommodate needs）」。" }
+      },
+      {
+        id: "L6-03", word: "accumulate", phonetic: "/əˈkjuːmjəleɪt/", pos: "v.", level: 6, theme: "學術與科學",
+        meaning: "累積；積聚；堆積", etymology: "ac- + cumulus (堆積) + -ate → 不斷堆高",
+        collocations: ["accumulate wealth", "accumulate experience", "accumulate scientific evidence"],
+        exampleEn: "Over decades, microplastics have continued to accumulate in deep ocean sediments.",
+        exampleZh: "數十年來，微塑膠持續在深海沉積物中累積。",
+        quizEn: "By reviewing twenty words every day, you will gradually accumulate an impressive vocabulary.",
+        quizZh: "透過每天複習二十個單字，你將會逐漸累積出驚人的字彙量。",
+        prepRule: { tip: "accumulate 常搭配 knowledge / experience / wealth / evidence / debt。" }
+      },
+      {
+        id: "L6-04", word: "advocate", phonetic: "/ˈædvəkeɪt/", pos: "vt./n.", level: 6, theme: "社會與政經",
+        meaning: "提倡；主張；擁護者", etymology: "ad- (向) + voc (聲音) + -ate → 為某事發聲疾呼",
+        collocations: ["advocate for environmental protection", "a staunch advocate of", "publicly advocate"],
+        exampleEn: "Pediatricians strongly advocate limiting screen time for children under six.",
+        exampleZh: "小兒科醫師強烈主張限制六歲以下兒童的螢幕使用時間。",
+        quizEn: "She has been a lifelong advocate of equal educational opportunities for rural children.",
+        quizZh: "她終生都是偏鄉兒童平等教育機會的提倡者。",
+        prepRule: { tip: "advocate 當及物動詞後接 V-ing（advocate limiting...）；當名詞則搭配 an advocate of/for。" }
+      },
+      {
+        id: "L6-05", word: "allocate", phonetic: "/ˈæləkeɪt/", pos: "vt.", level: 6, theme: "商務與溝通",
+        meaning: "分配；撥出（經費、資源、時間）", etymology: "al- (向) + locus (地方) + -ate → 將資源放到指定位置",
+        collocations: ["allocate funds to", "allocate resources efficiently", "allocate time for"],
+        exampleEn: "The ministry decided to allocate more budget to rural healthcare facilities.",
+        exampleZh: "部會決定撥出更多預算給偏鄉醫療設施。",
+        quizEn: "Effective project managers know how to allocate time and manpower to the most urgent tasks.",
+        quizZh: "高效的專案經理懂得如何將時間與人力分配給最緊迫的任務。",
+        prepRule: { requiredPrep: "to", tip: "allocate 最經典的句型是 allocate + 資源/經費/時間 + to/for + 對象。" }
+      },
+      {
+        id: "L6-06", word: "ambiguous", phonetic: "/æmˈbɪɡjuəs/", pos: "adj.", level: 6, theme: "商務與溝通",
+        meaning: "模稜兩可的；含糊不清的", etymology: "ambi- (兩邊) + agere (驅動) → 可往兩邊解釋的",
+        collocations: ["ambiguous wording", "an ambiguous attitude", "remain deliberately ambiguous"],
+        exampleEn: "The contract contained ambiguous clauses that led to a legal dispute between the partners.",
+        exampleZh: "合約中包含模稜兩可的條款，導致合夥人之間產生法律糾紛。",
+        quizEn: "The politician gave an ambiguous reply to avoid offending either side of the voters.",
+        quizZh: "該名政治人物給了一個模稜兩可的回答，以避免得罪任何一方選民。",
+        prepRule: { tip: "ambiguous 常修飾 wording / reply / statement / attitude。" }
+      },
+      {
+        id: "L6-07", word: "anticipate", phonetic: "/ænˈtɪsɪpeɪt/", pos: "vt.", level: 6, theme: "心理與行為",
+        meaning: "預期；預料；期盼；提前應對", etymology: "ante- (在…之前) + capere (拿取) → 事先採取行動或預想",
+        collocations: ["anticipate problems", "eagerly anticipate", "anticipate a surge in demand"],
+        exampleEn: "Organizers did not anticipate such a massive turnout for the charity concert.",
+        exampleZh: "主辦單位並未預料到這場慈善音樂會有如此龐大的出席人數。",
+        quizEn: "Airlines anticipate a sharp increase in international passengers during the Lunar New Year holiday.",
+        quizZh: "航空公司預期農曆春節假期期間國際旅客人數將大幅增加。",
+        prepRule: { tip: "anticipate 後面若接動詞，必須用動名詞 V-ing（anticipate seeing you），不可接 to V。" }
+      },
+      {
+        id: "L6-08", word: "articulate", phonetic: "/ɑːrˈtɪkjuleɪt/", pos: "vt./adj.", level: 6, theme: "商務與溝通",
+        meaning: "清楚表達；口齒伶俐的；表達力強的", etymology: "articul (關節、分節) + -ate → 條理分明地說出",
+        collocations: ["articulate a vision", "an articulate speaker", "clearly articulate thoughts"],
+        exampleEn: "A good leader must be able to articulate a clear vision for the organization.",
+        exampleZh: "優秀的領導者必須能夠清楚表達組織的明確願景。",
+        quizEn: "Practicing sentence output daily will help you articulate complex ideas during English interviews.",
+        quizZh: "每天練習造句輸出能幫助你在英文面試時清楚表達複雜的想法。",
+        prepRule: { tip: "articulate 當動詞時直接接 ideas / thoughts / vision；當形容詞指人「口條清晰（an articulate speaker）」。" }
+      },
+      {
+        id: "L6-09", word: "assess", phonetic: "/əˈses/", pos: "vt.", level: 6, theme: "學術與科學",
+        meaning: "評估；評定；估算", etymology: "ad- (在旁) + sedere (坐) → 法官坐堂核定稅額、評估",
+        collocations: ["assess the impact of", "assess damage", "accurately assess risks"],
+        exampleEn: "Engineers were sent to assess the structural damage caused by the earthquake.",
+        exampleZh: "工程師被派往現場評估地震造成的結構損壞。",
+        quizEn: "Standardized tests alone cannot fully assess a student's creativity and problem-solving ability.",
+        quizZh: "光靠標準化測驗無法完全評估學生的創造力與解決問題的能力。",
+        prepRule: { tip: "assess 常搭配 assess the impact / value / risk / damage。" }
+      },
+      {
+        id: "L6-10", word: "authentic", phonetic: "/ɔːˈθentɪk/", pos: "adj.", level: 6, theme: "學術與科學",
+        meaning: "道地的；真正的；真跡的；可靠的", etymology: "源自希臘文 authentikos (原創的、親手完成的)",
+        collocations: ["authentic cuisine", "an authentic document", "authentic language context"],
+        exampleEn: "Learning vocabulary through authentic news articles helps build natural language intuition.",
+        exampleZh: "透過道地的新聞文章學習單字，有助於建立自然的語感。",
+        quizEn: "Art historians confirmed that the Renaissance painting found in the attic was completely authentic.",
+        quizZh: "藝術史學家證實，在閣樓發現的那幅文藝復興時期畫作是千真萬確的真跡。",
+        prepRule: { tip: "authentic 可指「道地美食/語料（authentic food/materials）」或「真跡（authentic painting）」。" }
+      },
+      {
+        id: "L6-11", word: "bias", phonetic: "/ˈbaɪəs/", pos: "n./vt.", level: 6, theme: "心理與行為",
+        meaning: "偏見；偏頗；偏差", etymology: "源自法文 biais (斜線、偏向一方)",
+        collocations: ["cognitive bias", "unconscious bias", "media bias against"],
+        exampleEn: "Double-blind experiments are designed to eliminate researcher bias during clinical trials.",
+        exampleZh: "雙盲實驗旨在消除臨床試驗期間的研究人員偏見。",
+        quizEn: "AI hiring algorithms must be carefully audited to prevent gender or racial bias against applicants.",
+        quizZh: "AI 招募演算法必須經過仔細審核，以防止對求職者產生性別或種族偏見。",
+        prepRule: { requiredPrep: "against", tip: "表示「對某群體的偏見」時，常搭配介系詞 against 或 toward（bias against / toward）。" }
+      },
+      {
+        id: "L6-12", word: "breakthrough", phonetic: "/ˈbreɪkθruː/", pos: "n.", level: 6, theme: "學術與科學",
+        meaning: "重大突破；重要進展", etymology: "break (衝破) + through (穿過) → 衝破瓶頸",
+        collocations: ["a major scientific breakthrough", "make a breakthrough in", "diplomatic breakthrough"],
+        exampleEn: "Scientists achieved a major breakthrough in solid-state battery storage technology.",
+        exampleZh: "科學家在固態電池儲能技術上取得了重大突破。",
+        quizEn: "The discovery of penicillin marked a revolutionary breakthrough in modern medicine.",
+        quizZh: "盤尼西林的發現標誌著現代醫學的一項革命性突破。",
+        prepRule: { requiredPrep: "in", tip: "常搭配動詞 make / achieve a breakthrough in + 領域。" }
+      },
+      {
+        id: "L6-13", word: "coherent", phonetic: "/koʊˈhɪrənt/", pos: "adj.", level: 6, theme: "學術與科學",
+        meaning: "連貫的；條理分明的；一致的", etymology: "co- (共同) + haerere (黏附) → 前後緊密相連的",
+        collocations: ["a coherent argument", "coherent policy", "form a coherent whole"],
+        exampleEn: "Your essay contains interesting points, but it lacks a coherent structure.",
+        exampleZh: "你的文章包含有趣的觀點，但缺乏連貫的結構。",
+        quizEn: "The government was criticized for failing to present a coherent strategy to tackle housing prices.",
+        quizZh: "政府因未能提出一套連貫的策略來解決房價問題而受到批評。",
+        prepRule: { tip: "coherent 是英文作文評分標準（Coherence 連貫性）的核心形容詞，常修飾 argument / structure / strategy。" }
+      },
+      {
+        id: "L6-14", word: "compensate", phonetic: "/ˈkɑːmpenseɪt/", pos: "v.", level: 6, theme: "商務與溝通",
+        meaning: "補償；賠償；彌補", etymology: "com- (共同) + pensare (稱重、衡量) → 使天平恢復平衡",
+        collocations: ["compensate victims for losses", "compensate for a lack of", "fully compensated"],
+        exampleEn: "Hard work and preparation can often compensate for a lack of natural talent.",
+        exampleZh: "努力與準備往往能彌補天生才華的不足。",
+        quizEn: "The airline agreed to compensate passengers for the twelve-hour flight delay.",
+        quizZh: "航空公司同意針對長達十二小時的班機延誤向旅客進行賠償。",
+        prepRule: { requiredPrep: "for", tip: "compensate 表示「彌補、賠償某項損失或不足」時，固定搭配介系詞 for（compensate for）。" }
+      },
+      {
+        id: "L6-15", word: "comprehensive", phonetic: "/ˌkɑːmprɪˈhensɪv/", pos: "adj.", level: 6, theme: "學術與科學",
+        meaning: "全面的；綜合的；詳盡的", etymology: "com- + prehend (抓取、包含) + -ive → 包羅萬象的",
+        collocations: ["a comprehensive study", "comprehensive health insurance", "comprehensive review"],
+        exampleEn: "The report provides a comprehensive analysis of renewable energy trends in Asia.",
+        exampleZh: "這份報告針對亞洲再生能源趨勢提供了全面的分析。",
+        quizEn: "Before undergoing surgery, the patient received a comprehensive physical examination.",
+        quizZh: "在接受手術之前，該名病患接受了全面的身體檢查。",
+        prepRule: { tip: "注意別跟 comprehensible（易懂的）搞混！comprehensive 是「全面的、詳盡的」。" }
+      },
+      {
+        id: "L6-16", word: "consensus", phonetic: "/kənˈsensəs/", pos: "n.", level: 6, theme: "社會與政經",
+        meaning: "共識；一致同意", etymology: "con- (共同) + sentire (感覺、認為) → 大家看法一致",
+        collocations: ["reach a consensus", "scientific consensus on", "build consensus among"],
+        exampleEn: "There is a broad scientific consensus that human activities are driving global warming.",
+        exampleZh: "科學界普遍有共識，認為人類活動正加劇全球暖化。",
+        quizEn: "After three days of summit talks, the committee members finally reached a consensus on the budget.",
+        quizZh: "經過三天的峰會會談後，委員會成員終於對預算達成共識。",
+        prepRule: { requiredPrep: "on", tip: "最核心搭配為 reach a consensus on + 議題（針對…達成共識）。" }
+      },
+      {
+        id: "L6-17", word: "controversial", phonetic: "/ˌkɑːntrəˈvɜːrʃl/", pos: "adj.", level: 6, theme: "社會與政經",
+        meaning: "具爭議性的；引起爭論的", etymology: "contra- (反對) + vers (轉向) + -ial → 各方意見相左的",
+        collocations: ["a highly controversial issue", "a controversial policy", "remain controversial"],
+        exampleEn: "The proposal to build a nuclear power plant near the coast remains highly controversial.",
+        exampleZh: "在海岸附近興建核電廠的提案仍然極具爭議。",
+        quizEn: "Using facial recognition cameras in public schools has become a controversial topic.",
+        quizZh: "在公立學校使用人臉辨識攝影機已成為一個具爭議性的話題。",
+        prepRule: { tip: "常搭配副詞 highly（highly controversial issue / figure / policy）。" }
+      },
+      {
+        id: "L6-18", word: "crucial", phonetic: "/ˈkruːʃl/", pos: "adj.", level: 6, theme: "學術與科學",
+        meaning: "至關重要的；決定性的", etymology: "源自拉丁文 crux (十字路口) → 決定方向的關鍵點",
+        collocations: ["play a crucial role in", "at a crucial moment", "crucial to long-term retention"],
+        exampleEn: "Sleep plays a crucial role in consolidating newly learned vocabulary into long-term memory.",
+        exampleZh: "睡眠在將新學到的單字鞏固為長期記憶上扮演至關重要的角色。",
+        quizEn: "Early detection is crucial to the successful treatment of many chronic diseases.",
+        quizZh: "早期發現對於許多慢性疾病的成功治療至關重要。",
+        prepRule: { requiredPrep: "to", tip: "常搭配 be crucial to + N/V-ing，或 play a crucial role in + N/V-ing。" }
+      },
+      {
+        id: "L6-19", word: "cultivate", phonetic: "/ˈkʌltɪveɪt/", pos: "vt.", level: 6, theme: "環境與自然",
+        meaning: "耕作；栽種；培養（習慣、關係、氣質）", etymology: "cult (耕種、培育，如 culture) + -ivate",
+        collocations: ["cultivate a habit of", "cultivate critical thinking", "cultivate fertile land"],
+        exampleEn: "Reading diverse articles daily helps cultivate critical thinking and language sensitivity.",
+        exampleZh: "每天閱讀多元文章有助於培養批判性思維與語感敏銳度。",
+        quizEn: "Parents should help children cultivate a habit of reading for pleasure from an early age.",
+        quizZh: "父母應協助孩子從小培養享受閱讀的習慣。",
+        prepRule: { tip: "cultivate 是取代 develop a habit 的高分動詞：cultivate a habit of + V-ing。" }
+      },
+      {
+        id: "L6-20", word: "deteriorate", phonetic: "/dɪˈtɪriəreɪt/", pos: "vi.", level: 6, theme: "環境與自然",
+        meaning: "惡化；退化；變壞", etymology: "de- (向下) + terior (更差的) + -ate → 情況每況愈下",
+        collocations: ["rapidly deteriorate", "deteriorating air quality", "health deteriorated"],
+        exampleEn: "Air quality in the basin tends to deteriorate rapidly when wind speeds drop in autumn.",
+        exampleZh: "當秋季風速減弱時，盆地內的空氣品質往往會迅速惡化。",
+        quizEn: "Diplomatic relations between the two countries began to deteriorate after the trade dispute.",
+        quizZh: "在貿易爭端之後，兩國之間的外交關係開始惡化。",
+        prepRule: { tip: "deteriorate 多作不及物動詞（主詞直接是情況、健康、環境或關係：relations deteriorated）。" }
+      },
+      {
+        id: "L6-21", word: "dilemma", phonetic: "/dɪˈlemə/", pos: "n.", level: 6, theme: "心理與行為",
+        meaning: "進退兩難；困境；道德抉擇", etymology: "di- (二) + lemma (前提、命題) → 兩難的局面",
+        collocations: ["face a moral dilemma", "in a dilemma over", "solve a thorny dilemma"],
+        exampleEn: "Autonomous vehicles sometimes face an ethical dilemma when an accident is unavoidable.",
+        exampleZh: "自動駕駛車輛在事故無法避免時，有時會面臨道德兩難。",
+        quizEn: "Working parents often find themselves in a dilemma between career advancement and family time.",
+        quizZh: "雙薪父母常發現自己陷入職涯晉升與家庭時間之間的兩難困境。",
+        prepRule: { tip: "常搭配 face a dilemma 或 be in a dilemma（處於兩難之中）。" }
+      },
+      {
+        id: "L6-22", word: "diminish", phonetic: "/dɪˈmɪnɪʃ/", pos: "v.", level: 6, theme: "學術與科學",
+        meaning: "減少；削弱；降低；貶低", etymology: "di- + minuere (變小，如 minute/minimum)",
+        collocations: ["diminish the effectiveness of", "diminishing returns", "never diminish one's effort"],
+        exampleEn: "Cramming all night will actually diminish your ability to recall information the next day.",
+        exampleZh: "熬夜死背臨時抱佛腳，反而會削弱你隔天提取資訊的能力。",
+        quizEn: "Even the passage of thirty years could not diminish her enthusiasm for scientific research.",
+        quizZh: "即使過了三十年，也無法削減她對科學研究的熱情。",
+        prepRule: { tip: "diminish 可取代 reduce/weaken，常搭配 diminish the impact / value / enthusiasm。" }
+      },
+      {
+        id: "L6-23", word: "enhance", phonetic: "/ɪnˈhæns/", pos: "vt.", level: 6, theme: "商務與溝通",
+        meaning: "提升；增進；強化（價值、品質、能力）", etymology: "en- + altus (高的) → 使變得更高更好",
+        collocations: ["enhance memory retention", "enhance productivity", "enhance user experience"],
+        exampleEn: "Testing yourself with flashcards significantly enhances long-term memory retention.",
+        exampleZh: "使用閃卡自我測試能顯著提升長期記憶留存率。",
+        quizEn: "Adding green spaces and bike lanes can greatly enhance the quality of urban life.",
+        quizZh: "增加綠地與自行車道能大幅提升都市生活品質。",
+        prepRule: { tip: "enhance 是及物動詞，直接接正面名詞：enhance efficiency / quality / reputation。" }
+      },
+      {
+        id: "L6-24", word: "feasible", phonetic: "/ˈfiːzəbl/", pos: "adj.", level: 6, theme: "商務與溝通",
+        meaning: "可行的；行得通的；切實的", etymology: "源自法文 faisable (能做到的，源自拉丁文 facere 做)",
+        collocations: ["economically feasible", "a feasible solution", "technically feasible"],
+        exampleEn: "Memorizing twenty-five new words a day is a far more feasible plan than cramming two hundred.",
+        exampleZh: "每天背二十五個新單字，是比一次硬塞兩百個字更可行的計畫。",
+        quizEn: "After reviewing the budget, the committee concluded that building an underground tunnel was not financially feasible.",
+        quizZh: "在審視預算後，委員會總結認為興建地下隧道在財務上並不可行。",
+        prepRule: { tip: "常與副詞連用：economically / technically / financially feasible（在經濟／技術／財務上可行的）。" }
+      },
+      {
+        id: "L6-25", word: "implement", phonetic: "/ˈɪmplɪment/", pos: "vt./n.", level: 6, theme: "社會與政經",
+        meaning: "實施；執行；貫徹；工具", etymology: "im- (進入) + ple (填滿) + -ment → 使計畫落實填滿",
+        collocations: ["implement a new policy", "fully implement reforms", "implement a study schedule"],
+        exampleEn: "The school decided to implement a new digital learning platform this semester.",
+        exampleZh: "學校決定在這學期實施一套新的數位學習平台。",
+        quizEn: "Even the best strategy is useless if the team fails to implement it effectively.",
+        quizZh: "如果團隊無法有效執行，再好的策略也是枉然。",
+        prepRule: { tip: "implement 是取代 carry out 的學術動詞，常搭配 implement a policy / plan / law / reform。" }
+      },
+      {
+        id: "L6-26", word: "incentive", phonetic: "/ɪnˈsentɪv/", pos: "n.", level: 6, theme: "商務與溝通",
+        meaning: "誘因；獎勵；動機", etymology: "in- + canere (吹奏號角激勵) → 激發行動的誘因",
+        collocations: ["financial incentives", "provide an incentive to", "tax incentives"],
+        exampleEn: "The government offered tax incentives to encourage households to install solar panels.",
+        exampleZh: "政府提供稅務誘因，鼓勵家庭安裝太陽能板。",
+        quizEn: "Without fair promotion opportunities, employees have little incentive to work overtime.",
+        quizZh: "如果沒有公平的升遷機會，員工幾乎沒有加班的誘因。",
+        prepRule: { requiredPrep: "to", tip: "常搭配 provide/give sb. an incentive to V（提供某人做…的誘因）。" }
+      },
+      {
+        id: "L6-27", word: "inevitable", phonetic: "/ɪnˈevɪtəbl/", pos: "adj.", level: 6, theme: "心理與行為",
+        meaning: "不可避免的；必然發生的", etymology: "in- (不) + evitable (可避開的) → 躲不掉的",
+        collocations: ["an inevitable consequence", "forgetting is inevitable without review", "seem inevitable"],
+        exampleEn: "Forgetting newly learned words is inevitable unless you review them at spaced intervals.",
+        exampleZh: "除非你以固定間隔複習，否則遺忘新學的單字是不可避免的。",
+        quizEn: "Occasional misunderstandings are an inevitable part of cross-cultural communication.",
+        quizZh: "偶爾的誤解是跨文化溝通中不可避免的一部分。",
+        prepRule: { tip: "常搭配 an inevitable result / consequence / part of。" }
+      },
+      {
+        id: "L6-28", word: "perspective", phonetic: "/pərˈspektɪv/", pos: "n.", level: 6, theme: "心理與行為",
+        meaning: "觀點；視角；遠景；透視法", etymology: "per- (穿透) + spec (看) + -tive → 看待事物的角度",
+        collocations: ["from a scientific perspective", "gain a broader perspective", "put things in perspective"],
+        exampleEn: "Studying abroad allowed her to view global issues from a completely new perspective.",
+        exampleZh: "出國留學讓她能從全新的視角看待全球議題。",
+        quizEn: "From an economic perspective, investing in preventive healthcare saves billions in the long run.",
+        quizZh: "從經濟角度來看，投資預防性醫療保健長期下來能省下數十億經費。",
+        prepRule: { requiredPrep: "from", tip: "寫作萬用句首片語：From a(n) [scientific/historical/personal] perspective, ...（從…觀點來看）。" }
+      },
+      {
+        id: "L6-29", word: "reinforce", phonetic: "/ˌriːɪnˈfɔːrs/", pos: "vt.", level: 6, theme: "學術與科學",
+        meaning: "強化；加深（記憶或觀點）；加固；增援", etymology: "re- (再次) + in- + force (力量) → 再次注入強度",
+        collocations: ["reinforce memory traces", "reinforce positive behavior", "reinforced concrete"],
+        exampleEn: "Each active recall session serves to reinforce the neural pathways in your brain.",
+        exampleZh: "每一次主動提取練習都能強化你大腦中的神經迴路。",
+        quizEn: "Using newly learned words in your own sentences helps reinforce what you studied today.",
+        quizZh: "在自己的造句中使用新學到的單字，有助於強化你今天所學的內容。",
+        prepRule: { tip: "reinforce 常搭配 reinforce memory / stereotypes / behavior / structure。" }
+      },
+      {
+        id: "L6-30", word: "retrieve", phonetic: "/rɪˈtriːv/", pos: "vt.", level: 6, theme: "學術與科學",
+        meaning: "提取（記憶、資料）；找回；挽回", etymology: "re- (再次) + trouver (找到) → 重新找回來",
+        collocations: ["retrieve information from memory", "retrieve lost data", "active retrieval practice"],
+        exampleEn: "Struggling to retrieve a word from memory actually strengthens your future recall.",
+        exampleZh: "努力從記憶中提取一個單字的過程，實際上會強化你未來的回想能力。",
+        quizEn: "Rescue divers worked through the night to retrieve the flight data recorder from the ocean floor.",
+        quizZh: "搜救潛水員徹夜工作，從海底找回飛航資料紀錄器（黑盒子）。",
+        prepRule: { requiredPrep: "from", tip: "常搭配 retrieve A from B（從 B 提取／找回 A）。" }
+      }
+    ];
+
+    // ============================================================================
+    // 2. CLEAN INITIAL STATE & SEAMLESS MIGRATION
+    // ============================================================================
+    const STORAGE_KEY = "lexiscience_5000_7000_clean_v2";
+
+    let appState = {
+      currentDay: 1,
+      dailyNewGoal: 20,
+      newLearnedToday: 0,
+      reviewedToday: 0,
+      quizCorrect: 0,
+      quizTotal: 0,
+      vocab: [],
+      sentencesLog: []
+    };
+
+    let currentStudyList = [];
+    let currentCardIndex = 0;
+    let isCardFlipped = false;
+    let currentClozeItem = null;
+    let currentStudioWords = [];
+
+    let ebbinghausChartInstance = null;
+    let workloadChartInstance = null;
+    let masteryChartInstance = null;
+    let forecastChartInstance = null;
+
+    function initAppState() {
+      let loaded = null;
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) loaded = JSON.parse(raw);
+      } catch (err) {
+        loaded = null;
+      }
+
+      if (loaded && Array.isArray(loaded.vocab) && loaded.vocab.length > 0) {
+        appState = Object.assign(appState, loaded);
+        // Merge new quizEn, quizZh, and prepRule fields into existing saved words
+        const bankMap = {};
+        INITIAL_VOCAB_BANK.forEach(b => { bankMap[b.id] = b; });
+        appState.vocab = appState.vocab.map(w => {
+          const ref = bankMap[w.id];
+          if (ref) {
+            return {
+              ...ref,
+              reps: w.reps || 0,
+              interval: w.interval || 0,
+              ef: w.ef || 2.5,
+              dueDay: w.dueDay !== undefined ? w.dueDay : null,
+              starred: Boolean(w.starred),
+              lastGrade: w.lastGrade || null
+            };
+          }
+          return w;
+        });
+        saveAppState();
+      } else {
+        appState.vocab = INITIAL_VOCAB_BANK.map(item => ({
+          ...item,
+          reps: 0,
+          interval: 0,
+          ef: 2.5,
+          dueDay: null,
+          starred: false,
+          lastGrade: null
+        }));
+        appState.sentencesLog = [];
+        saveAppState();
+      }
+    }
+
+    function saveAppState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (err) {
+        // Ignore storage error
+      }
+    }
+
+    function toggleOnboardingBanner() {
+      const banner = document.getElementById("onboardingBanner");
+      if (banner) banner.classList.toggle("hidden");
+    }
+
+    // Helper: Get words the user has actually learned (dueDay !== null)
+    function getLearnedWordsPool() {
+      return appState.vocab.filter(w => w.dueDay !== null);
+    }
+
+    // ============================================================================
+    // 3. SUPERMEMO SM-2 ALGORITHM IMPLEMENTATION
+    // ============================================================================
+    function previewNextInterval(wordObj, grade) {
+      let reps = wordObj.reps || 0;
+      let interval = wordObj.interval || 0;
+      let ef = wordObj.ef || 2.5;
+
+      if (grade < 3) return 1;
+      if (grade === 3) {
+        if (reps === 0) return 1;
+        if (reps === 1) return 3;
+        return Math.max(1, Math.round(interval * 1.2));
+      }
+      if (grade === 4) {
+        if (reps === 0) return 1;
+        if (reps === 1) return 6;
+        return Math.max(1, Math.round(interval * ef));
+      }
+      if (grade === 5) {
+        if (reps === 0) return 3;
+        if (reps === 1) return 8;
+        return Math.max(1, Math.round(interval * ef * 1.3));
+      }
+      return 1;
+    }
+
+    function applySM2Grade(wordObj, grade) {
+      const wasNew = (wordObj.reps === 0 && wordObj.dueDay === null);
+      const wasDue = (wordObj.dueDay !== null && wordObj.dueDay <= appState.currentDay);
+      const nextInt = previewNextInterval(wordObj, grade);
+
+      if (grade < 3) {
+        wordObj.reps = 0;
+        wordObj.interval = 1;
+        wordObj.ef = Math.max(1.3, Number((wordObj.ef - 0.2).toFixed(2)));
+        wordObj.dueDay = appState.currentDay + 1;
+      } else {
+        wordObj.reps = (wordObj.reps || 0) + 1;
+        wordObj.interval = nextInt;
+        const q = grade;
+        const delta = 0.1 - (5 - q) * (0.08 + (5 - q) * 0.02);
+        wordObj.ef = Math.max(1.3, Number((wordObj.ef + delta).toFixed(2)));
+        wordObj.dueDay = appState.currentDay + nextInt;
+      }
+      wordObj.lastGrade = grade;
+      wordObj.lastStudiedDay = appState.currentDay;
+
+      if (wasNew) {
+        appState.newLearnedToday += 1;
+      } else if (wasDue) {
+        appState.reviewedToday += 1;
+      }
+      saveAppState();
+    }
+
+    // ============================================================================
+    // 4. TAB 1: FLASHCARD & STUDY QUEUE LOGIC
+    // ============================================================================
+    function buildStudyQueue() {
+      const levelFilter = document.getElementById("studyLevelFilter").value;
+      const queueMode = document.getElementById("studyQueueMode").value;
+      const themeFilter = document.getElementById("studyThemeFilter").value;
+
+      let pool = appState.vocab.filter(w => {
+        if (levelFilter !== "all" && String(w.level) !== String(levelFilter)) return false;
+        if (themeFilter !== "all" && w.theme !== themeFilter) return false;
+        return true;
+      });
+
+      if (queueMode === "due") {
+        pool = pool.filter(w => w.dueDay !== null && w.dueDay <= appState.currentDay);
+      } else if (queueMode === "new") {
+        pool = pool.filter(w => w.dueDay === null);
+      } else if (queueMode === "starred") {
+        pool = pool.filter(w => w.starred);
+      } else if (queueMode === "smart") {
+        const dueList = pool.filter(w => w.dueDay !== null && w.dueDay <= appState.currentDay);
+        const remainingNewQuota = Math.max(0, appState.dailyNewGoal - appState.newLearnedToday);
+        const newList = pool.filter(w => w.dueDay === null).slice(0, remainingNewQuota);
+        pool = [...dueList, ...newList];
+      }
+
+      currentStudyList = pool;
+      if (currentCardIndex >= currentStudyList.length) {
+        currentCardIndex = 0;
+      }
+    }
+
+    function onStudyFilterChange() {
+      currentCardIndex = 0;
+      isCardFlipped = false;
+      buildStudyQueue();
+      renderStudyView();
+    }
+
+    function renderStudyView() {
+      updateGlobalKPIs();
+      const queueCountEl = document.getElementById("queueListCountBadge");
+      const queueListEl = document.getElementById("studyQueueList");
+      const queueMode = document.getElementById("studyQueueMode").value;
+
+      if (currentStudyList.length === 0) {
+        queueCountEl.textContent = "0 字";
+        queueListEl.innerHTML = `<div class="col-span-full py-4 text-center text-xs text-slate-400">目前此模式下沒有待背單字。</div>`;
+
+        if (queueMode === "due") {
+          document.getElementById("cardWordText").textContent = "目前沒有需複習的舊字 ✨";
+          document.getElementById("cardExampleEn").textContent = "因為你今天剛開始使用（或已複習完畢），目前還沒有到期的舊單字！請將上方選單切回「🎯 今日自動排程」或「✨ 只背新單字」開始學新單字。";
+        } else {
+          document.getElementById("cardWordText").textContent = "今日目標已達成 🎉";
+          document.getElementById("cardExampleEn").textContent = "恭喜你完成了今天的新單字與複習！現在點上方「② 測驗與造句活用」，系統會針對你今天背過的單字出全新克漏字並由 AI 批改你的造句！";
+        }
+        document.getElementById("cardPhoneticText").textContent = "";
+        document.getElementById("cardPosBadge").textContent = "提示";
+        document.getElementById("cardFrontPrompt").classList.add("hidden");
+        document.getElementById("cardBackAnswer").classList.add("hidden");
+        return;
+      }
+
+      const item = currentStudyList[currentCardIndex];
+      queueCountEl.textContent = `${currentStudyList.length} 字`;
+
+      const levelBadge = document.getElementById("cardLevelBadge");
+      levelBadge.textContent = `Level ${item.level} (${item.level === 5 ? '5000單' : '6000–7000單'})`;
+      levelBadge.className = item.level === 5
+        ? "px-2.5 py-0.5 text-xs font-bold rounded-full bg-indigo-100 text-indigo-800"
+        : "px-2.5 py-0.5 text-xs font-bold rounded-full bg-purple-100 text-purple-800";
+
+      document.getElementById("cardThemeBadge").textContent = item.theme;
+
+      const srsBadge = document.getElementById("cardSRSStatusBadge");
+      if (item.dueDay === null) {
+        srsBadge.textContent = "✨ 尚未學過的新單字";
+        srsBadge.className = "px-2.5 py-0.5 text-xs font-bold rounded-full bg-sky-50 text-sky-700 border border-sky-200";
+        document.getElementById("cardSrsMetaText").textContent =
+          "目前狀態：尚未學過的新單字（翻開解答並選擇下方 1~4 熟悉度後，即自動加入「已背單字池」供測驗與造句使用）";
+      } else if (item.dueDay <= appState.currentDay) {
+        srsBadge.textContent = `🔄 今日到期舊字複習`;
+        srsBadge.className = "px-2.5 py-0.5 text-xs font-bold rounded-full bg-amber-100 text-amber-900 border border-amber-300";
+        document.getElementById("cardSrsMetaText").textContent =
+          `目前狀態：已學過（連續答對 ${item.reps} 次｜上次間隔 ${item.interval} 天）— 今天正好到期需複習！`;
+      } else {
+        srsBadge.textContent = `✅ 已學過 (排定第 ${item.dueDay} 天複習)`;
+        srsBadge.className = "px-2.5 py-0.5 text-xs font-bold rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200";
+        document.getElementById("cardSrsMetaText").textContent =
+          `目前狀態：記憶鞏固中（連續答對 ${item.reps} 次｜預計第 ${item.dueDay} 天再複習）`;
+      }
+
+      document.getElementById("cardQueueCounter").textContent = `第 ${currentCardIndex + 1} / ${currentStudyList.length} 張`;
+
+      const starBtn = document.getElementById("cardStarBtn");
+      starBtn.className = item.starred
+        ? "p-1.5 rounded-lg bg-amber-50 text-amber-500 transition"
+        : "p-1.5 rounded-lg hover:bg-slate-200 text-slate-400 transition";
+
+      document.getElementById("cardWordText").textContent = item.word;
+      document.getElementById("cardPhoneticText").textContent = item.phonetic;
+      document.getElementById("cardPosBadge").textContent = item.pos;
+
+      const regex = new RegExp(`(${item.word}[a-z]*)`, "gi");
+      document.getElementById("cardExampleEn").innerHTML = item.exampleEn.replace(
+        regex,
+        `<span class="px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-900 font-extrabold underline decoration-indigo-400">$1</span>`
+      );
+
+      document.getElementById("cardMeaningZh").textContent = item.meaning;
+      document.getElementById("cardExampleZh").textContent = `例句翻譯：${item.exampleZh}`;
+      document.getElementById("cardEtymology").textContent = item.etymology;
+
+      const collList = document.getElementById("cardCollocationsList");
+      collList.innerHTML = item.collocations.map(c => `
+        <button onclick="speakText('${c.replace(/'/g, "\\'")}', 'en-US')" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold text-white flex items-center gap-1.5 border border-white/15 transition">
+          <span>${c}</span>
+          <span class="text-indigo-300 text-[10px]">🔊</span>
+        </button>
+      `).join("");
+
+      document.getElementById("sm2NextInt-1").textContent = `明天 (+1天)`;
+      document.getElementById("sm2NextInt-3").textContent = `${previewNextInterval(item, 3)} 天後`;
+      document.getElementById("sm2NextInt-4").textContent = `${previewNextInterval(item, 4)} 天後`;
+      document.getElementById("sm2NextInt-5").textContent = `${previewNextInterval(item, 5)} 天後`;
+
+      if (isCardFlipped) {
+        document.getElementById("cardFrontPrompt").classList.add("hidden");
+        document.getElementById("cardBackAnswer").classList.remove("hidden");
+      } else {
+        document.getElementById("cardFrontPrompt").classList.remove("hidden");
+        document.getElementById("cardBackAnswer").classList.add("hidden");
+      }
+
+      queueListEl.innerHTML = currentStudyList.map((w, idx) => {
+        const isCurrent = idx === currentCardIndex;
+        const badgeText = w.dueDay === null ? "新字" : (w.dueDay <= appState.currentDay ? "待複習" : `D${w.dueDay}`);
+        return `
+          <button onclick="jumpToQueueCard(${idx})" class="p-2 flex items-center justify-between text-left rounded-xl border transition ${isCurrent ? 'bg-indigo-50 border-indigo-300 font-bold text-indigo-900' : 'bg-slate-50/60 border-slate-200/70 hover:bg-slate-100 text-slate-700'}">
+            <div class="truncate pr-2">
+              <span class="text-xs font-bold">${w.word}</span>
+              <span class="text-[11px] text-slate-500 ml-1">${w.meaning}</span>
+            </div>
+            <span class="text-[10px] px-1.5 py-0.5 rounded bg-white border border-slate-200 text-slate-600 font-semibold shrink-0">${badgeText}</span>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function revealCardAnswer() {
+      isCardFlipped = true;
+      renderStudyView();
+    }
+
+    function rateCardSM2(grade) {
+      if (currentStudyList.length === 0) return;
+      const item = currentStudyList[currentCardIndex];
+      const nextDays = previewNextInterval(item, grade);
+      applySM2Grade(item, grade);
+
+      const gradeLabels = {
+        1: `已將「${item.word}」加入已背單字池！排入明天（第 ${appState.currentDay + 1} 天）優先複習`,
+        3: `已將「${item.word}」加入已背單字池！將於 ${nextDays} 天後複習`,
+        4: `已學會「${item.word}」！已加入測驗與造句池，並排入 ${nextDays} 天後複習`,
+        5: `太熟了！「${item.word}」已加入測驗與造句池，並排入 ${nextDays} 天後複習`
+      };
+      showToast(gradeLabels[grade] || "已更新學習進度", grade === 1 ? "amber" : "emerald");
+
+      isCardFlipped = false;
+      buildStudyQueue();
+      if (currentCardIndex >= currentStudyList.length) {
+        currentCardIndex = 0;
+      }
+      renderStudyView();
+      renderWordBankTable();
+    }
+
+    function navigateStudyCard(delta) {
+      if (currentStudyList.length === 0) return;
+      currentCardIndex = (currentCardIndex + delta + currentStudyList.length) % currentStudyList.length;
+      isCardFlipped = false;
+      renderStudyView();
+    }
+
+    function jumpToQueueCard(idx) {
+      currentCardIndex = idx;
+      isCardFlipped = false;
+      renderStudyView();
+    }
+
+    function toggleStarCurrentWord() {
+      if (currentStudyList.length === 0) return;
+      const item = currentStudyList[currentCardIndex];
+      item.starred = !item.starred;
+      saveAppState();
+      renderStudyView();
+      renderWordBankTable();
+      showToast(item.starred ? `已將 ${item.word} 加入星號收藏` : `已取消 ${item.word} 的星號收藏`, "indigo");
+    }
+
+    function sendCurrentWordToStudio() {
+      if (currentStudyList.length === 0) return;
+      const item = currentStudyList[currentCardIndex];
+      // If the user hasn't rated this word yet, mark it as learned (Good) so it's in their learned pool!
+      if (item.dueDay === null) {
+        applySM2Grade(item, 4);
+      }
+      const learnedOthers = getLearnedWordsPool().filter(w => w.id !== item.id);
+      const fallbackOthers = appState.vocab.filter(w => w.id !== item.id);
+      const sourceOthers = learnedOthers.length >= 2 ? learnedOthers : [...learnedOthers];
+      currentStudioWords = [item, ...sourceOthers.slice(0, 2)];
+      switchTab("practice");
+      renderPracticeHeaderAndState();
+      renderStudioView();
+      showToast(`已將「${item.word}」加入已背單字池並帶入造句工作坊！`, "indigo");
+    }
+
+    // ============================================================================
+    // 5. WEB SPEECH API PRONUNCIATION
+    // ============================================================================
+    function speakText(text, lang = "en-US") {
+      try {
+        if ("speechSynthesis" in window) {
+          window.speechSynthesis.cancel();
+          const utter = new SpeechSynthesisUtterance(text);
+          utter.lang = lang;
+          utter.rate = 0.95;
+          window.speechSynthesis.speak(utter);
+        } else {
+          showToast(`發音：${text}`, "indigo");
+        }
+      } catch (e) {
+        showToast(`發音：${text}`, "indigo");
+      }
+    }
+
+    function speakCurrentWord(lang = "en-US") {
+      if (currentStudyList.length === 0) return;
+      speakText(currentStudyList[currentCardIndex].word, lang);
+    }
+
+    function speakCurrentExample() {
+      if (currentStudyList.length === 0) return;
+      speakText(currentStudyList[currentCardIndex].exampleEn, "en-US");
+    }
+
+    // ============================================================================
+    // 6. TAB 2: LEARNED-WORD LINKED CLOZE QUIZ & AI SENTENCE DIAGNOSTIC ENGINE
+    // ============================================================================
+    function renderPracticeHeaderAndState() {
+      const learnedPool = getLearnedWordsPool();
+      const poolMode = document.getElementById("practicePoolSelect").value;
+      const countText = document.getElementById("practiceLearnedCountText");
+      const chipsBox = document.getElementById("practiceLearnedChipsBox");
+      const emptyWarn = document.getElementById("practiceEmptyWarning");
+      const mainGrid = document.getElementById("practiceMainGrid");
+
+      countText.textContent = learnedPool.length;
+
+      if (learnedPool.length === 0) {
+        chipsBox.innerHTML = `<span class="text-slate-400">目前尚未背過任何單字（請先在「① 開始背單字」翻開卡片並選擇 1~4 熟悉度）</span>`;
+      } else {
+        chipsBox.innerHTML = `<span class="text-slate-500 font-semibold mr-1">你已背過的單字：</span>` +
+          learnedPool.map(w => `
+            <span class="px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-800 border border-indigo-200 font-bold text-[11px]">
+              ${w.word} <span class="font-normal text-indigo-500">(${w.meaning.split('；')[0]})</span>
+            </span>
+          `).join("");
+      }
+
+      if (poolMode === "learned" && learnedPool.length === 0) {
+        emptyWarn.classList.remove("hidden");
+        mainGrid.classList.add("hidden");
+      } else {
+        emptyWarn.classList.add("hidden");
+        mainGrid.classList.remove("hidden");
+      }
+    }
+
+    function onPracticePoolChange() {
+      renderPracticeHeaderAndState();
+      generateNextClozeQuestion();
+      pickRandomStudioWords();
+    }
+
+    function switchPracticeToAllMode() {
+      document.getElementById("practicePoolSelect").value = "all";
+      onPracticePoolChange();
+      showToast("已切換為「擴充考全部 60 字題庫」模式", "indigo");
+    }
+
+    function generateNextClozeQuestion() {
+      const poolMode = document.getElementById("practicePoolSelect").value;
+      const lvl = document.getElementById("quizLevelSelect").value;
+
+      const learnedPool = getLearnedWordsPool();
+      let targetCandidates = (poolMode === "learned") ? learnedPool : appState.vocab;
+      targetCandidates = targetCandidates.filter(w => lvl === "all" || String(w.level) === String(lvl));
+
+      // Fallback if level filter excluded the learned words
+      if (targetCandidates.length === 0 && poolMode === "learned" && learnedPool.length > 0) {
+        targetCandidates = learnedPool;
+      }
+      if (targetCandidates.length === 0) return;
+
+      // Avoid repeating the exact same target word back-to-back if >1 candidate exists
+      let availableTargets = targetCandidates;
+      if (currentClozeItem && targetCandidates.length > 1) {
+        availableTargets = targetCandidates.filter(w => w.id !== currentClozeItem.target.id);
+      }
+      const target = availableTargets[Math.floor(Math.random() * availableTargets.length)];
+
+      // Build 3 distractors: prioritize other learned words first, then pad with same-POS or same-level words from vocab
+      const learnedDistractors = learnedPool.filter(w => w.id !== target.id).sort(() => 0.5 - Math.random());
+      const otherDistractors = appState.vocab
+        .filter(w => w.id !== target.id && !learnedDistractors.some(ld => ld.id === w.id))
+        .sort(() => 0.5 - Math.random());
+
+      const distractors = [...learnedDistractors, ...otherDistractors].slice(0, 3);
+      const options = [target, ...distractors].sort(() => 0.5 - Math.random());
+
+      currentClozeItem = { target, options, answered: false };
+
+      const isFromLearned = target.dueDay !== null;
+      document.getElementById("clozeThemeTag").textContent =
+        `${isFromLearned ? '🎯 出自你背過的單字' : '📖 題庫擴充單字'}｜Level ${target.level} (${target.theme})`;
+
+      // Hide Chinese translation & collocation hint BEFORE answering!
+      const lockBadge = document.getElementById("clozeTranslationLockBadge");
+      lockBadge.classList.remove("hidden");
+      lockBadge.textContent = "🔒 作答前隱藏中譯（請從英文上下文推敲）";
+
+      const collHint = document.getElementById("clozeCollocationHint");
+      collHint.classList.add("hidden");
+      collHint.textContent = `搭配詞提示：${target.collocations[0] || target.word}`;
+
+      // Use the brand-new varied sentence (quizEn) instead of the study flashcard sentence (exampleEn)!
+      const rawQuizSentence = target.quizEn || target.exampleEn;
+      const blanked = rawQuizSentence.replace(new RegExp(target.word + "[a-z]*", "gi"), "________");
+      document.getElementById("clozeSentenceEn").textContent = blanked;
+
+      const zhEl = document.getElementById("clozeSentenceZh");
+      zhEl.classList.add("hidden");
+      zhEl.textContent = `🔓 測驗句中譯：${target.quizZh || target.exampleZh}`;
+
+      const feedbackBox = document.getElementById("clozeFeedbackBox");
+      feedbackBox.classList.add("hidden");
+
+      const grid = document.getElementById("clozeOptionsGrid");
+      grid.innerHTML = options.map((opt, idx) => `
+        <button id="clozeOptBtn-${idx}" onclick="submitClozeAnswer('${opt.id}', ${idx})" class="p-3.5 rounded-xl border border-slate-300 hover:border-indigo-500 hover:bg-indigo-50/40 text-left transition flex items-center justify-between">
+          <div>
+            <span class="text-sm font-extrabold text-slate-900">${opt.word}</span>
+            <span class="text-xs text-slate-400 ml-1">${opt.pos}</span>
+          </div>
+          <span class="text-xs text-slate-500">${String.fromCharCode(65 + idx)}</span>
+        </button>
+      `).join("");
+    }
+
+    function submitClozeAnswer(selectedId, btnIdx) {
+      if (!currentClozeItem || currentClozeItem.answered) return;
+      currentClozeItem.answered = true;
+      appState.quizTotal += 1;
+
+      const target = currentClozeItem.target;
+      const isCorrect = selectedId === target.id;
+      if (isCorrect) {
+        appState.quizCorrect += 1;
+        applySM2Grade(target, 4);
+      }
+      saveAppState();
+      updateGlobalKPIs();
+
+      document.getElementById("quizScoreBadge").textContent = `答對 ${appState.quizCorrect} / ${appState.quizTotal}`;
+
+      // Reveal Chinese translation and collocation hint AFTER answering!
+      document.getElementById("clozeTranslationLockBadge").classList.add("hidden");
+      document.getElementById("clozeCollocationHint").classList.remove("hidden");
+      document.getElementById("clozeSentenceZh").classList.remove("hidden");
+
+      // Also highlight the filled answer in the English sentence
+      const rawQuizSentence = target.quizEn || target.exampleEn;
+      document.getElementById("clozeSentenceEn").innerHTML = rawQuizSentence.replace(
+        new RegExp(`(${target.word}[a-z]*)`, "gi"),
+        `<span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-900 font-extrabold underline">$1</span>`
+      );
+
+      currentClozeItem.options.forEach((opt, idx) => {
+        const btn = document.getElementById(`clozeOptBtn-${idx}`);
+        if (!btn) return;
+        if (opt.id === target.id) {
+          btn.className = "p-3.5 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-left flex items-center justify-between";
+          btn.innerHTML = `<div><span class="text-sm font-extrabold text-emerald-900">${opt.word}</span> <span class="text-xs text-emerald-700 ml-1">${opt.meaning}</span></div><span class="text-xs font-bold text-emerald-700">✓ 正解</span>`;
+        } else if (idx === btnIdx && !isCorrect) {
+          btn.className = "p-3.5 rounded-xl border-2 border-rose-400 bg-rose-50 text-left flex items-center justify-between";
+          btn.innerHTML = `<div><span class="text-sm font-extrabold text-rose-900">${opt.word}</span> <span class="text-xs text-rose-700 ml-1">${opt.meaning}</span></div><span class="text-xs font-bold text-rose-700">✗ 誤選</span>`;
+        } else {
+          btn.innerHTML = `<div><span class="text-sm font-bold text-slate-600">${opt.word}</span> <span class="text-xs text-slate-500 ml-1">${opt.meaning}</span></div>`;
+        }
+      });
+
+      const feedbackBox = document.getElementById("clozeFeedbackBox");
+      feedbackBox.classList.remove("hidden");
+      feedbackBox.className = isCorrect
+        ? "p-4 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-950 text-xs sm:text-sm space-y-1.5"
+        : "p-4 rounded-xl border border-rose-200 bg-rose-50 text-rose-950 text-xs sm:text-sm space-y-1.5";
+
+      feedbackBox.innerHTML = `
+        <div class="font-extrabold">${isCorrect ? `🎯 答對了！你在全新語境中成功認出了「${target.word}」` : `💡 正確答案是：${target.word} (${target.meaning})`}</div>
+        <div><strong>必背搭配詞：</strong>${target.collocations.join(" ／ ")}</div>
+        <div class="text-xs text-slate-600 pt-1 border-t border-black/10">
+          <strong>對比單字卡原句：</strong>${target.exampleEn}（${target.exampleZh}）
+        </div>
+      `;
+    }
+
+    function pickRandomStudioWords() {
+      const poolMode = document.getElementById("practicePoolSelect").value;
+      const learnedPool = getLearnedWordsPool();
+      const sourcePool = (poolMode === "learned" && learnedPool.length > 0) ? learnedPool : appState.vocab;
+
+      // Sort by most recently studied today first, with slight shuffle
+      const shuffled = [...sourcePool].sort(() => 0.5 - Math.random());
+      currentStudioWords = shuffled.slice(0, Math.min(3, shuffled.length));
+      renderStudioView();
+    }
+
+    function renderStudioView() {
+      const poolMode = document.getElementById("practicePoolSelect").value;
+      const learnedPool = getLearnedWordsPool();
+
+      if (poolMode === "learned" && learnedPool.length > 0) {
+        // Ensure currentStudioWords only contains learned words
+        const allLearned = currentStudioWords.every(w => w.dueDay !== null);
+        if (currentStudioWords.length === 0 || !allLearned) {
+          currentStudioWords = [...learnedPool].sort(() => 0.5 - Math.random()).slice(0, Math.min(3, learnedPool.length));
+        }
+      } else if (currentStudioWords.length === 0) {
+        currentStudioWords = [...appState.vocab].sort(() => 0.5 - Math.random()).slice(0, 3);
+      }
+
+      const grid = document.getElementById("studioTargetWordsGrid");
+      const text = (document.getElementById("studioSentenceInput").value || "").toLowerCase();
+
+      let hitCount = 0;
+      grid.innerHTML = currentStudioWords.map(w => {
+        const stem = w.word.toLowerCase().slice(0, Math.max(4, w.word.length - 1));
+        const used = text.includes(w.word.toLowerCase()) || text.includes(stem);
+        if (used) hitCount += 1;
+        return `
+          <div class="p-3 rounded-xl border transition ${used ? 'border-emerald-400 bg-emerald-50/70' : 'border-slate-200 bg-slate-50'}">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-extrabold text-slate-900">${w.word}</span>
+              <span class="text-[10px] font-bold px-1.5 py-0.5 rounded ${used ? 'bg-emerald-200 text-emerald-900' : 'bg-indigo-100 text-indigo-800'}">${used ? '✓ 已運用' : (w.dueDay !== null ? '已背過' : 'L' + w.level)}</span>
+            </div>
+            <p class="text-xs text-slate-600 mt-0.5">${w.pos} ${w.meaning}</p>
+            <p class="text-[11px] text-indigo-700 font-medium mt-1 truncate" title="${w.collocations.join(', ')}">搭配：${w.collocations[0]}</p>
+          </div>
+        `;
+      }).join("");
+
+      document.getElementById("studioMatchStatus").textContent =
+        `目前已用到目標單字：${hitCount} / ${currentStudioWords.length}`;
+      renderStudioLogList();
+    }
+
+    function checkStudioWordUsage() {
+      renderStudioView();
+    }
+
+    function insertStudioSampleSentence() {
+      if (currentStudioWords.length === 0) pickRandomStudioWords();
+      const w1 = currentStudioWords[0];
+      const w2 = currentStudioWords[1] || currentStudioWords[0];
+      // Insert a realistic learner sentence that uses the target word(s) so the user can test the AI feedback engine
+      let sample = "";
+      if (w1.id === "L5-01") {
+        sample = "We should abide the law and respect the rules in society.";
+      } else if (w1.id === "L5-09") {
+        sample = "Doing exercise every day is very beneficial for our health.";
+      } else if (currentStudioWords.length >= 2) {
+        sample = `In modern society, we must ${w1.word} and use ${w2.collocations[0]} to solve problems.`;
+      } else {
+        sample = `Using ${w1.collocations[0]} is very important in our daily life.`;
+      }
+      document.getElementById("studioSentenceInput").value = sample;
+      checkStudioWordUsage();
+    }
+
+    // ============================================================================
+    // AI SENTENCE DIAGNOSTIC & COACHING ENGINE
+    // Evaluates:
+    // 1. Target word usage & inflection
+    // 2. Preposition & collocation precision (e.g., abide by, beneficial to, allocate to)
+    // 3. EFL grammar pitfalls (although...but, because...so, modal + inflected verb, capitalization, punctuation)
+    // 4. Sentence complexity & natural upgrade suggestion
+    // ============================================================================
+    function generateAISentenceFeedback(rawSentence, targetWordsUsed, fallbackTargetWords) {
+      const text = rawSentence.trim();
+      const lower = text.toLowerCase();
+      const wordsArray = text.split(/\s+/).filter(Boolean);
+      const wordCount = wordsArray.length;
+
+      const strengths = [];
+      const improvements = [];
+      let score = 82;
+
+      const activeTargets = targetWordsUsed.length > 0 ? targetWordsUsed : fallbackTargetWords;
+
+      // 1. Check Target Word Usage & Collocations
+      if (targetWordsUsed.length === 0) {
+        score -= 15;
+        const targetNames = fallbackTargetWords.map(w => `${w.word} (${w.meaning.split('；')[0]})`).join("、");
+        improvements.push(`<strong>尚未包含目標單字：</strong>這句話還沒有用到上方的目標單字（${targetNames}）。建議至少挑選其中 1 個單字並搭配它的高頻語塊寫入句子中。`);
+      } else {
+        strengths.push(`成功運用了已學單字 <strong>${targetWordsUsed.map(w => w.word).join(", ")}</strong>！`);
+      }
+
+      // Check specific preposition & collocation rules on each used word
+      targetWordsUsed.forEach(w => {
+        const usedCollocation = w.collocations.find(c => {
+          const coreTokens = c.toLowerCase().split(/\s+/).filter(t => t.length > 2 && t !== "the" && t !== "one's");
+          return coreTokens.length >= 2 && coreTokens.every(tok => lower.includes(tok.slice(0, 4)));
+        });
+
+        if (usedCollocation) {
+          score += 6;
+          strengths.push(`精準套用了道地搭配詞語塊「<strong>${usedCollocation}</strong>」，語感非常自然！`);
+        } else {
+          // Check preposition rules
+          if (w.prepRule && w.prepRule.requiredPrep) {
+            const reqPrep = w.prepRule.requiredPrep.toLowerCase();
+            const prepRegex = new RegExp(`\\b${reqPrep}\\b`, "i");
+            if (!prepRegex.test(text)) {
+              score -= 8;
+              improvements.push(`<strong>【${w.word}】介系詞搭配提醒：</strong>${w.prepRule.tip} 建議改用搭配詞「<code class="px-1 py-0.5 rounded bg-white/15 text-amber-200">${w.collocations[0]}</code>」。`);
+            } else {
+              score += 4;
+              strengths.push(`正確掌握了「<strong>${w.word} + ${reqPrep}</strong>」的介系詞搭配！`);
+            }
+          } else {
+            improvements.push(`<strong>【${w.word}】搭配詞升級建議：</strong>你已經把單字用進句子裡了！若想讓句子更像母語人士或學測高分範文，可以把「<strong>${w.word}</strong>」升級為完整搭配詞語塊：<strong>${w.collocations.join(" ／ ")}</strong>。`);
+          }
+        }
+
+        // Check common wrong preposition pairs (e.g. "beneficial for" -> "beneficial to", "combat with" -> "combat")
+        if (w.word === "beneficial" && /\bbeneficial\s+for\b/i.test(text)) {
+          score -= 5;
+          improvements.push(`<strong>介系詞修正（beneficial to）：</strong>英文中「對…有益」習慣說 <strong>be beneficial to</strong>（而非 beneficial for），例如：<em>beneficial to our health</em>。`);
+        }
+        if (w.word === "combat" && /\bcombat\s+with\b/i.test(text)) {
+          score -= 5;
+          improvements.push(`<strong>及物動詞修正（combat）：</strong>combat 當動詞表示「對抗、打擊」時是及物動詞，後面直接接名詞（如 <em>combat climate change</em>），不需要加 with。`);
+        }
+        if (w.word === "acknowledge" && /\backnowledge\s+to\s+[a-z]+/i.test(text) && !/\backnowledge\s+to\s+be\b/i.test(text)) {
+          score -= 5;
+          improvements.push(`<strong>動詞用法修正（acknowledge）：</strong>acknowledge 後面不直接接不定詞 to V，建議改接動名詞 <strong>acknowledge + V-ing</strong> 或 <strong>acknowledge that + 子句</strong>。`);
+        }
+        if (w.word === "anticipate" && /\banticipate\s+to\s+[a-z]+/i.test(text)) {
+          score -= 5;
+          improvements.push(`<strong>動詞用法修正（anticipate）：</strong>anticipate 後面若接動詞，必須使用動名詞 <strong>anticipate + V-ing</strong> 或名詞（如 <em>anticipate a surge in demand</em>），不可接 to V。`);
+        }
+      });
+
+      // 2. Check Mechanics & Common Taiwanese EFL Grammar Patterns
+      if (!/^[A-Z]/.test(text)) {
+        score -= 4;
+        improvements.push(`<strong>句首大小寫：</strong>英文句子開頭第一個字母請記得大寫（<strong>${text.charAt(0).toUpperCase() + text.slice(1, 15)}...</strong>）。`);
+      }
+      if (!/[.!?]$/.test(text)) {
+        score -= 3;
+        improvements.push(`<strong>句尾標點符號：</strong>完整英文句子結尾請加上句號（<code>.</code>）、問號或驚嘆號。`);
+      }
+      if (/\balthough\b[^.!?]*\bbut\b/i.test(text) || /\bthough\b[^.!?]*\bbut\b/i.test(text)) {
+        score -= 8;
+        improvements.push(`<strong>中式英文雙重連接詞修正（Although... but...）：</strong>英文中 <em>Although/Though</em> 與 <em>but</em> 不能同時出現在同一個句子裡，請刪掉 <em>but</em>，或把 <em>but</em> 換成副詞 <em>yet / still</em>。`);
+      }
+      if (/\bbecause\b[^.!?]*\bso\b/i.test(text)) {
+        score -= 8;
+        improvements.push(`<strong>雙重連接詞修正（Because... so...）：</strong>英文中 <em>Because</em> 與 <em>so</em> 不能同時連接兩個子句，請保留其中一個即可。`);
+      }
+      if (/\bthere\s+(have|has)\b/i.test(text)) {
+        score -= 8;
+        improvements.push(`<strong>存在句文法修正（There is / There are）：</strong>表示「有（存在）…」時應使用 <strong>There is / There are</strong>，不可寫成中式英文的 <em>There have/has</em>。`);
+      }
+      if (/\b(can|must|should|will|would|could|may|might)\s+[a-z]+(ed|s|ing)\b/i.test(text)) {
+        score -= 7;
+        improvements.push(`<strong>助動詞文法修正：</strong>助動詞（can / must / should / will 等）後面必須接<strong>原形動詞</strong>，請檢查助動詞後方的字尾是否誤加了 -s、-ed 或 -ing。`);
+      }
+
+      // 3. Sentence Length & Complexity Check
+      if (wordCount < 7) {
+        score -= 6;
+        improvements.push(`<strong>句型豐富度建議（目前 ${wordCount} 字）：</strong>句子稍微偏短！在學測或檢定寫作中，建議加上「原因（because / since）」、「目的（in order to）」或「讓步（although / despite）」子句，讓語境更完整。`);
+      } else if (wordCount >= 12) {
+        score += 5;
+        strengths.push(`句子長度充實（共 ${wordCount} 個字），具備完整的語境脈絡！`);
+      }
+
+      // 4. Build Tailored Native-Level Upgrade Model Sentence
+      let polishedModel = "";
+      if (activeTargets.length >= 2) {
+        const w1 = activeTargets[0];
+        const w2 = activeTargets[1];
+        polishedModel = `To ${w1.collocations[0]}, policymakers and citizens alike should work together—for instance, ${w2.exampleEn.charAt(0).toLowerCase() + w2.exampleEn.slice(1)}`;
+        // Even better: if w1 has a neat example sentence, show both a combined template and the official authentic sentence
+        polishedModel = `${w1.exampleEn} Moreover, ${w2.quizEn ? w2.quizEn.charAt(0).toLowerCase() + w2.quizEn.slice(1) : w2.exampleEn.charAt(0).toLowerCase() + w2.exampleEn.slice(1)}`;
+      } else if (activeTargets.length === 1) {
+        const w1 = activeTargets[0];
+        polishedModel = `${w1.exampleEn} （另一高分變化句：${w1.quizEn || w1.exampleEn}）`;
+      } else {
+        polishedModel = "Try combining a target word's collocation with a cause-and-effect clause.";
+      }
+
+      if (improvements.length === 0) {
+        improvements.push(`<strong>進階寫作挑戰：</strong>這句結構與搭配詞都很棒！下一步可以試著在句首加上轉折詞（如 <em>Furthermore, / From a long-term perspective,</em>）或將主動改為分詞構句。`);
+      }
+      if (strengths.length === 0) {
+        strengths.push(`已完成英文造句輸出練習！主動造句能讓記憶留存率提升 150%。`);
+      }
+
+      score = Math.max(60, Math.min(98, score));
+      return {
+        score,
+        strengths,
+        improvements,
+        polishedModel
+      };
+    }
+
+    function saveStudioSentence() {
+      const inputEl = document.getElementById("studioSentenceInput");
+      const rawText = (inputEl.value || "").trim();
+      if (!rawText) {
+        showToast("請先輸入英文造句再請 AI 批改喔！", "amber");
+        return;
+      }
+
+      const lower = rawText.toLowerCase();
+      const matchedWordObjs = [];
+      appState.vocab.forEach(w => {
+        const stem = w.word.toLowerCase().slice(0, Math.max(4, w.word.length - 1));
+        if (lower.includes(w.word.toLowerCase()) || lower.includes(stem)) {
+          matchedWordObjs.push(w);
+          applySM2Grade(w, 5);
+        }
+      });
+
+      const aiDiagnostic = generateAISentenceFeedback(rawText, matchedWordObjs, currentStudioWords);
+
+      const newEntry = {
+        id: "sent-" + Date.now(),
+        text: rawText,
+        wordsUsed: matchedWordObjs.length > 0 ? matchedWordObjs.map(w => w.word) : currentStudioWords.map(w => w.word),
+        day: appState.currentDay,
+        aiFeedback: aiDiagnostic
+      };
+
+      appState.sentencesLog.unshift(newEntry);
+      inputEl.value = "";
+      saveAppState();
+      updateGlobalKPIs();
+      renderPracticeHeaderAndState();
+      renderStudioView();
+      renderLatestAiFeedback(newEntry);
+      showToast(`AI 批改完成！診斷報告已顯示於下方`, "emerald");
+    }
+
+    function renderLatestAiFeedback(entry) {
+      const box = document.getElementById("latestAiFeedbackBox");
+      if (!box || !entry || !entry.aiFeedback) return;
+      const fb = entry.aiFeedback;
+      box.classList.remove("hidden");
+      box.innerHTML = `
+        <div class="flex items-center justify-between border-b border-white/15 pb-2">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded bg-emerald-500 text-slate-950 text-xs font-extrabold">🤖 AI 寫作診斷報告</span>
+            <span class="text-xs font-bold text-indigo-200">你的造句評分：${fb.score} / 100</span>
+          </div>
+          <button onclick="document.getElementById('latestAiFeedbackBox').classList.add('hidden')" class="text-xs text-indigo-300 hover:text-white">收合 ✕</button>
+        </div>
+        <div class="text-xs bg-white/10 p-2.5 rounded-xl text-white">
+          <span class="text-indigo-300 font-bold">你的原句：</span>"${entry.text}"
+        </div>
+        <div class="space-y-1.5 text-xs">
+          <div class="text-emerald-300 font-bold">✅ 表現亮點：</div>
+          <ul class="list-disc list-inside space-y-1 text-slate-200">
+            ${fb.strengths.map(s => `<li>${s}</li>`).join("")}
+          </ul>
+        </div>
+        <div class="space-y-1.5 text-xs">
+          <div class="text-amber-300 font-bold">🔧 AI 建議哪裡可以改進：</div>
+          <ul class="list-disc list-inside space-y-1.5 text-slate-100 leading-relaxed">
+            ${fb.improvements.map(imp => `<li>${imp}</li>`).join("")}
+          </ul>
+        </div>
+        <div class="p-3 rounded-xl bg-indigo-900/80 border border-indigo-700 text-xs space-y-1">
+          <div class="text-indigo-200 font-bold">✨ 目標單字母語級高分示範句：</div>
+          <p class="text-white leading-relaxed">${fb.polishedModel}</p>
+        </div>
+      `;
+    }
+
+    function deleteStudioSentence(id) {
+      appState.sentencesLog = appState.sentencesLog.filter(s => s.id !== id);
+      saveAppState();
+      updateGlobalKPIs();
+      renderStudioLogList();
+    }
+
+    function renderStudioLogList() {
+      const listEl = document.getElementById("studioSavedLogList");
+      const countEl = document.getElementById("studioLogCount");
+      countEl.textContent = `${appState.sentencesLog.length} 筆紀錄`;
+
+      if (appState.sentencesLog.length === 0) {
+        listEl.innerHTML = `<div class="text-xs text-slate-400 py-4 text-center border border-dashed border-slate-200 rounded-xl">目前還沒有造句紀錄（完成上方造句後，這裡會保存你的句子與 AI 批改建議）</div>`;
+        return;
+      }
+
+      listEl.innerHTML = appState.sentencesLog.map(item => {
+        const fb = item.aiFeedback;
+        return `
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-2">
+            <div class="flex items-center justify-between">
+              <div class="flex flex-wrap items-center gap-1">
+                ${item.wordsUsed.map(w => `<span class="px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-800 font-bold text-[10px]">${w}</span>`).join("")}
+                ${fb ? `<span class="ml-1 px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]">AI 評分 ${fb.score}</span>` : ''}
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] text-slate-400">第 ${item.day} 天</span>
+                <button onclick="deleteStudioSentence('${item.id}')" class="text-slate-400 hover:text-rose-600" title="刪除">✕</button>
+              </div>
+            </div>
+            <p class="text-slate-900 font-bold leading-relaxed">"${item.text}"</p>
+            ${fb ? `
+              <div class="p-2.5 rounded-lg bg-white border border-slate-200/80 space-y-1 text-[11px] text-slate-700">
+                <div class="font-bold text-amber-800">🔧 AI 改進建議：</div>
+                <ul class="list-disc list-inside space-y-0.5">
+                  ${fb.improvements.map(i => `<li>${i}</li>`).join("")}
+                </ul>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join("");
+    }
+
+    // ============================================================================
+    // 7. TAB 5: EBBINGHAUS FORGETTING CURVE & DAILY WORKLOAD CALCULATOR
+    // ============================================================================
+    function initScienceCharts() {
+      updateEbbinghausChart();
+      runWorkloadCalculator();
+    }
+
+    function updateEbbinghausChart() {
+      const canvas = document.getElementById("ebbinghausCanvas");
+      if (!canvas) return;
+      const mode = document.getElementById("meaningModeSelect").value;
+
+      const labels = ["剛學完 (0m)", "20 分鐘", "1 小時", "9 小時", "第 1 天", "第 6 天", "第 31 天"];
+      const rawEbbinghaus = [100, 58, 44, 36, 33, 25, 21];
+      const contextNoReview = [100, 78, 68, 60, 54, 42, 35];
+      const srsWithActiveRecall = [100, 82, 76, 72, 95, 92, 90];
+
+      const datasets = [
+        {
+          label: "死背孤立單字且不複習 (1885 原始留存率)",
+          data: rawEbbinghaus,
+          borderColor: "#f43f5e",
+          backgroundColor: "rgba(244, 63, 94, 0.08)",
+          borderWidth: 2.5,
+          borderDash: [5, 5],
+          tension: 0.35,
+          fill: true,
+          pointRadius: 4
+        }
+      ];
+
+      if (mode === "context" || mode === "srs") {
+        datasets.push({
+          label: "搭配例句與字根理解（但未按間隔複習）",
+          data: contextNoReview,
+          borderColor: "#f59e0b",
+          backgroundColor: "rgba(245, 158, 11, 0.05)",
+          borderWidth: 2,
+          tension: 0.35,
+          fill: false,
+          pointRadius: 4
+        });
+      }
+
+      if (mode === "srs") {
+        datasets.push({
+          label: "間隔重複 + 主動回想 (於第 1、3、7、14、30 天複習)",
+          data: srsWithActiveRecall,
+          borderColor: "#4f46e5",
+          backgroundColor: "rgba(79, 70, 229, 0.12)",
+          borderWidth: 3,
+          tension: 0.3,
+          fill: true,
+          pointRadius: 5
+        });
+      }
+
+      if (ebbinghausChartInstance) ebbinghausChartInstance.destroy();
+
+      ebbinghausChartInstance = new Chart(canvas, {
+        type: "line",
+        data: { labels, datasets },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 11 } } },
+            tooltip: {
+              callbacks: {
+                label: ctx => `${ctx.dataset.label}: 記憶留存率 ${ctx.parsed.y}% (遺忘 ${100 - ctx.parsed.y}%)`
+              }
+            }
+          },
+          scales: {
+            y: {
+              min: 0,
+              max: 100,
+              ticks: { callback: v => v + "%" }
+            }
+          }
+        }
+      });
+    }
+
+    function runWorkloadCalculator() {
+      const totalWords = Number(document.getElementById("calcTotalWordsSlider").value || 2000);
+      const dailyNew = Number(document.getElementById("calcDailyNewSlider").value || 20);
+      const accuracy = Number(document.getElementById("calcAccuracySlider").value || 85);
+
+      document.getElementById("calcTotalWordsVal").textContent = totalWords;
+      document.getElementById("calcDailyNewVal").textContent = dailyNew;
+      document.getElementById("calcAccuracyVal").textContent = accuracy;
+
+      const totalDays = Math.ceil(totalWords / dailyNew);
+      const months = (totalDays / 30).toFixed(1);
+
+      const lapsePenalty = (100 - accuracy) * 0.055;
+      const reviewMultiplier = Number((1.65 + lapsePenalty).toFixed(1));
+      const steadyReviews = Math.round(dailyNew * reviewMultiplier);
+      const totalDailyCards = dailyNew + steadyReviews;
+      const estMinutes = Math.round((dailyNew * 35 + steadyReviews * 12) / 60);
+
+      document.getElementById("calcOutDays").textContent = `${totalDays} 天`;
+      document.getElementById("calcOutMonths").textContent = `約 ${months} 個月完成一輪`;
+      document.getElementById("calcOutDailyReviews").textContent = `約 ${steadyReviews} 字/天`;
+      document.getElementById("calcOutRatio").textContent = `新舊比約 1 : ${reviewMultiplier}`;
+      document.getElementById("calcOutTotalCards").textContent = `${totalDailyCards} 張/天`;
+      document.getElementById("calcOutMinutes").textContent = `約 ${estMinutes} 分鐘`;
+
+      const simCanvas = document.getElementById("workloadSimCanvas");
+      if (!simCanvas) return;
+
+      const dayLabels = ["第1天", "第3天", "第7天", "第14天", "第21天", "第30天"];
+      const newSeries = dayLabels.map(() => dailyNew);
+      const reviewSeries = [
+        0,
+        Math.round(dailyNew * 1.0),
+        Math.round(dailyNew * 1.6),
+        Math.round(dailyNew * 2.0),
+        Math.round(dailyNew * (reviewMultiplier - 0.1)),
+        steadyReviews
+      ];
+
+      if (workloadChartInstance) workloadChartInstance.destroy();
+
+      workloadChartInstance = new Chart(simCanvas, {
+        type: "bar",
+        data: {
+          labels: dayLabels,
+          datasets: [
+            { label: "每日新單字", data: newSeries, backgroundColor: "#4f46e5", borderRadius: 4 },
+            { label: "累積到期舊字複習", data: reviewSeries, backgroundColor: "#f59e0b", borderRadius: 4 }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: "bottom", labels: { boxWidth: 10, font: { size: 10 } } }
+          },
+          scales: {
+            x: { stacked: true, ticks: { font: { size: 10 } } },
+            y: { stacked: true, ticks: { font: { size: 10 } } }
+          }
+        }
+      });
+    }
+
+    function applyCalculatorGoalToStudy() {
+      const dailyNew = Number(document.getElementById("calcDailyNewSlider").value || 20);
+      appState.dailyNewGoal = dailyNew;
+      document.getElementById("quickDailyGoalInput").value = dailyNew;
+      saveAppState();
+      buildStudyQueue();
+      renderStudyView();
+      switchTab("study");
+      showToast(`已將每日新單字目標設定為 ${dailyNew} 字/天！`, "emerald");
+    }
+
+    function updateDailyGoalFromInput(val) {
+      const num = Math.max(5, Math.min(100, Number(val) || 20));
+      appState.dailyNewGoal = num;
+      document.getElementById("calcDailyNewSlider").value = Math.min(60, Math.max(10, num));
+      saveAppState();
+      buildStudyQueue();
+      renderStudyView();
+      runWorkloadCalculator();
+      showToast(`每日新單字目標已更新為 ${num} 字`, "indigo");
+    }
+
+    // ============================================================================
+    // 8. TAB 4: WORD BANK TABLE & BULK IMPORT
+    // ============================================================================
+    function renderWordBankTable() {
+      const tbody = document.getElementById("wordBankTableBody");
+      if (!tbody) return;
+
+      const query = (document.getElementById("bankSearchInput").value || "").trim().toLowerCase();
+      const lvl = document.getElementById("bankLevelFilter").value;
+      const theme = document.getElementById("bankThemeFilter").value;
+      const status = document.getElementById("bankStatusFilter").value;
+
+      const filtered = appState.vocab.filter(w => {
+        if (lvl !== "all" && String(w.level) !== String(lvl)) return false;
+        if (theme !== "all" && w.theme !== theme) return false;
+        if (status === "new" && w.dueDay !== null) return false;
+        if (status === "learning" && (w.dueDay === null || w.interval >= 7)) return false;
+        if (status === "mastered" && (w.dueDay === null || w.interval < 7)) return false;
+        if (status === "starred" && !w.starred) return false;
+        if (query) {
+          const hay = `${w.word} ${w.meaning} ${w.collocations.join(" ")} ${w.etymology}`.toLowerCase();
+          if (!hay.includes(query)) return false;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-400 text-xs">找不到符合篩選條件的單字</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(w => {
+        let statusTag = `<span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-600">尚未學習</span>`;
+        if (w.dueDay !== null) {
+          if (w.dueDay <= appState.currentDay) {
+            statusTag = `<span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800">今日到期需複習</span>`;
+          } else if (w.interval >= 7) {
+            statusTag = `<span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800">長期熟練 (第 ${w.dueDay} 天複習)</span>`;
+          } else {
+            statusTag = `<span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-100 text-indigo-800">已學過 (第 ${w.dueDay} 天複習)</span>`;
+          }
+        }
+
+        return `
+          <tr class="hover:bg-slate-50/80 transition">
+            <td class="py-3 px-4">
+              <div class="flex items-center gap-2">
+                <button onclick="speakText('${w.word.replace(/'/g, "\\'")}', 'en-US')" class="p-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-600" title="發音">🔊</button>
+                <div>
+                  <div class="font-extrabold text-slate-900">${w.word} <span class="text-xs font-normal text-slate-500">${w.pos}</span></div>
+                  <div class="text-[11px] font-mono text-slate-400">${w.phonetic}</div>
+                </div>
+              </div>
+            </td>
+            <td class="py-3 px-3">
+              <span class="px-2 py-0.5 rounded text-[11px] font-bold ${w.level === 5 ? 'bg-indigo-100 text-indigo-800' : 'bg-purple-100 text-purple-800'}">Level ${w.level}</span>
+              <div class="text-[11px] text-slate-500 mt-1">${w.theme}</div>
+            </td>
+            <td class="py-3 px-4">
+              <div class="font-bold text-slate-800">${w.meaning}</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">${w.etymology}</div>
+            </td>
+            <td class="py-3 px-4">
+              <div class="flex flex-wrap gap-1">
+                ${w.collocations.map(c => `<span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-medium">${c}</span>`).join("")}
+              </div>
+            </td>
+            <td class="py-3 px-3">${statusTag}</td>
+            <td class="py-3 px-3 text-right whitespace-nowrap">
+              <button onclick="studySpecificWord('${w.id}')" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold">去背這字</button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function studySpecificWord(wordId) {
+      document.getElementById("studyLevelFilter").value = "all";
+      document.getElementById("studyQueueMode").value = "all";
+      document.getElementById("studyThemeFilter").value = "all";
+      buildStudyQueue();
+      const idx = currentStudyList.findIndex(w => w.id === wordId);
+      if (idx >= 0) currentCardIndex = idx;
+      isCardFlipped = false;
+      switchTab("study");
+      renderStudyView();
+    }
+
+    function openAddWordModal() {
+      document.getElementById("addWordModal").classList.remove("hidden");
+    }
+
+    function closeAddWordModal() {
+      document.getElementById("addWordModal").classList.add("hidden");
+    }
+
+    function fillSampleImportLines() {
+      document.getElementById("bulkImportTextarea").value = [
+        "resilient | adj. | 有韌性的；能迅速復原的 | a resilient economy, resilient to stress | Children are often more resilient than adults realize. | 6",
+        "scrutiny | n. | 仔細審查；監督 | under close scrutiny, public scrutiny | The company's financial records came under close scrutiny. | 6",
+        "vulnerable | adj. | 脆弱的；易受傷害的 | vulnerable to climate change, vulnerable groups | Coastal communities are particularly vulnerable to rising sea levels. | 6",
+        "legitimate | adj. | 合法的；正當合理的 | a legitimate concern, legitimate business | Employees raised legitimate concerns about workplace safety. | 6",
+        "speculate | v. | 推測；猜測；投機 | speculate about the future, speculate on stock prices | Analysts continue to speculate about the central bank's next move. | 5"
+      ].join("\n");
+    }
+
+    function submitBulkImportWords() {
+      const raw = (document.getElementById("bulkImportTextarea").value || "").trim();
+      if (!raw) {
+        showToast("請輸入欲匯入的單字內容", "amber");
+        return;
+      }
+
+      const lines = raw.split("\n").map(l => l.trim()).filter(Boolean);
+      let added = 0;
+
+      lines.forEach((line, idx) => {
+        const parts = line.split("|").map(p => p.trim());
+        if (parts.length >= 3) {
+          const word = parts[0];
+          const pos = parts[1] || "n./v.";
+          const meaning = parts[2] || "";
+          const collocations = parts[3] ? parts[3].split(",").map(c => c.trim()).filter(Boolean) : [word];
+          const exampleEn = parts[4] || `Try using the word "${word}" in an authentic sentence.`;
+          const level = Number(parts[5]) === 5 ? 5 : 6;
+
+          const exists = appState.vocab.some(w => w.word.toLowerCase() === word.toLowerCase());
+          if (!exists && word) {
+            appState.vocab.unshift({
+              id: `CUST-${Date.now()}-${idx}`,
+              word,
+              phonetic: "/—/",
+              pos,
+              level,
+              theme: "學術與科學",
+              meaning,
+              etymology: "自訂擴充單字（建議結合搭配詞與造句記憶）",
+              collocations,
+              exampleEn,
+              exampleZh: meaning,
+              quizEn: `In practical writing, knowing how to use "${collocations[0]}" helps you master the word ${word}.`,
+              quizZh: `在實際寫作中，懂得運用「${collocations[0]}」能幫助你精通 ${word}（${meaning}）。`,
+              reps: 0,
+              interval: 0,
+              ef: 2.5,
+              dueDay: null,
+              starred: true,
+              lastGrade: null
+            });
+            added += 1;
+          }
+        }
+      });
+
+      saveAppState();
+      closeAddWordModal();
+      buildStudyQueue();
+      renderStudyView();
+      renderWordBankTable();
+      showToast(`成功匯入 ${added} 個新單字至題庫！`, "emerald");
+    }
+
+    function exportProgressJSON() {
+      const dataStr = JSON.stringify(appState, null, 2);
+      try {
+        const blob = new Blob([dataStr], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `lexiscience_5000_7000_day${appState.currentDay}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast("已匯出學習進度備份檔！", "emerald");
+      } catch (e) {
+        showToast("匯出完成", "emerald");
+      }
+    }
+
+    // ============================================================================
+    // 9. TAB 3: SRS SCHEDULE & DAY ADVANCE SIMULATION
+    // ============================================================================
+    function renderScheduleCharts() {
+      const dCanvas = document.getElementById("masteryDoughnutCanvas");
+      const fCanvas = document.getElementById("forecastBarCanvas");
+      if (!dCanvas || !fCanvas) return;
+
+      const newCount = appState.vocab.filter(w => w.dueDay === null).length;
+      const dueNowCount = appState.vocab.filter(w => w.dueDay !== null && w.dueDay <= appState.currentDay).length;
+      const youngCount = appState.vocab.filter(w => w.dueDay !== null && w.dueDay > appState.currentDay && w.interval < 7).length;
+      const matureCount = appState.vocab.filter(w => w.dueDay !== null && w.interval >= 7).length;
+
+      if (masteryChartInstance) masteryChartInstance.destroy();
+      masteryChartInstance = new Chart(dCanvas, {
+        type: "doughnut",
+        data: {
+          labels: ["尚未學習", "今日到期需複習", "短期鞏固中 (<7天)", "長期熟練 (≥7天)"],
+          datasets: [{
+            data: [newCount, dueNowCount, youngCount, matureCount],
+            backgroundColor: ["#cbd5e1", "#f59e0b", "#6366f1", "#10b981"],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: "bottom", labels: { boxWidth: 10, font: { size: 11 } } }
+          }
+        }
+      });
+
+      document.getElementById("masteryLegendBox").innerHTML = `
+        <div class="p-2 rounded-lg bg-slate-50 border border-slate-200 flex justify-between"><span>尚未學習：</span><strong>${newCount} 字</strong></div>
+        <div class="p-2 rounded-lg bg-amber-50 border border-amber-200 flex justify-between"><span>今日待複習：</span><strong>${dueNowCount} 字</strong></div>
+        <div class="p-2 rounded-lg bg-indigo-50 border border-indigo-200 flex justify-between"><span>短期鞏固：</span><strong>${youngCount} 字</strong></div>
+        <div class="p-2 rounded-lg bg-emerald-50 border border-emerald-200 flex justify-between"><span>長期熟練：</span><strong>${matureCount} 字</strong></div>
+      `;
+
+      const labels = [];
+      const counts = [];
+      for (let offset = 0; offset < 14; offset++) {
+        const targetDay = appState.currentDay + offset;
+        labels.push(offset === 0 ? `今天 (D${targetDay})` : `第${targetDay}天`);
+        const c = appState.vocab.filter(w => {
+          if (w.dueDay === null) return false;
+          if (offset === 0) return w.dueDay <= targetDay;
+          return w.dueDay === targetDay;
+        }).length;
+        counts.push(c);
+      }
+
+      if (forecastChartInstance) forecastChartInstance.destroy();
+      forecastChartInstance = new Chart(fCanvas, {
+        type: "bar",
+        data: {
+          labels,
+          datasets: [{
+            label: "預計到期需複習單字數",
+            data: counts,
+            backgroundColor: labels.map((_, i) => i === 0 ? "#f59e0b" : "#4f46e5"),
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        }
+      });
+    }
+
+    function advanceSimulatedDay() {
+      appState.currentDay += 1;
+      appState.newLearnedToday = 0;
+      appState.reviewedToday = 0;
+      saveAppState();
+      buildStudyQueue();
+      renderStudyView();
+      renderWordBankTable();
+      renderScheduleCharts();
+      const dueCount = appState.vocab.filter(w => w.dueDay !== null && w.dueDay <= appState.currentDay).length;
+      if (dueCount > 0) {
+        showToast(`已進入第 ${appState.currentDay} 天！你有 ${dueCount} 個之前背過的單字今天到期需要複習囉`, "amber");
+      } else {
+        showToast(`已進入第 ${appState.currentDay} 天！（你還沒背過明天到期的單字，先翻開幾張單字卡評分試試看吧）`, "indigo");
+      }
+    }
+
+    function resetAllProgressModal() {
+      document.getElementById("resetConfirmModal").classList.remove("hidden");
+    }
+
+    function closeResetModal() {
+      document.getElementById("resetConfirmModal").classList.add("hidden");
+    }
+
+    function confirmResetAllProgress() {
+      appState.currentDay = 1;
+      appState.newLearnedToday = 0;
+      appState.reviewedToday = 0;
+      appState.quizCorrect = 0;
+      appState.quizTotal = 0;
+      appState.sentencesLog = [];
+      appState.vocab.forEach(w => {
+        w.reps = 0;
+        w.interval = 0;
+        w.ef = 2.5;
+        w.dueDay = null;
+        w.lastGrade = null;
+      });
+      saveAppState();
+      closeResetModal();
+      buildStudyQueue();
+      renderStudyView();
+      renderPracticeHeaderAndState();
+      renderWordBankTable();
+      renderScheduleCharts();
+      showToast("已將所有進度歸零！現在從第 1 天、0 已學單字重新開始", "emerald");
+    }
+
+    // ============================================================================
+    // 10. GLOBAL KPI & NAVIGATION HELPERS
+    // ============================================================================
+    function updateGlobalKPIs() {
+      const dueCount = appState.vocab.filter(w => w.dueDay !== null && w.dueDay <= appState.currentDay).length;
+      const learnedCount = appState.vocab.filter(w => w.dueDay !== null).length;
+      const masteredCount = appState.vocab.filter(w => w.dueDay !== null && w.interval >= 7).length;
+
+      const learnedList = appState.vocab.filter(w => w.dueDay !== null);
+      const avgEf = learnedList.length > 0
+        ? (learnedList.reduce((acc, cur) => acc + (cur.ef || 2.5), 0) / learnedList.length).toFixed(2)
+        : "2.50";
+
+      document.getElementById("kpiNewToday").textContent = appState.newLearnedToday;
+      document.getElementById("kpiNewGoal").textContent = appState.dailyNewGoal;
+      document.getElementById("kpiDueReviews").textContent = dueCount;
+      document.getElementById("kpiReviewedToday").textContent = appState.reviewedToday;
+      document.getElementById("kpiLearnedTotal").textContent = learnedCount;
+      document.getElementById("kpiDeckTotal").textContent = appState.vocab.length;
+      document.getElementById("kpiMasteredTotal").textContent = masteredCount;
+      document.getElementById("kpiAvgEF").textContent = avgEf;
+      document.getElementById("kpiOutputCount").textContent = appState.sentencesLog.length;
+      document.getElementById("kpiQuizCorrect").textContent = appState.quizCorrect;
+
+      const navBadge = document.getElementById("navDueBadge");
+      navBadge.textContent = dueCount;
+      if (dueCount > 0) {
+        navBadge.classList.remove("hidden");
+      } else {
+        navBadge.classList.add("hidden");
+      }
+
+      const poolBadge = document.getElementById("navLearnedPoolBadge");
+      if (poolBadge) {
+        poolBadge.textContent = `${learnedCount}字`;
+      }
+
+      document.getElementById("desktopDayLabel").textContent = `第 ${appState.currentDay} 天`;
+      document.getElementById("mobileDayBadge").textContent = `第 ${appState.currentDay} 天`;
+
+      const pct = Math.min(100, Math.round((appState.newLearnedToday / Math.max(1, appState.dailyNewGoal)) * 100));
+      const bar = document.getElementById("todayProgressBar");
+      if (bar) bar.style.width = `${pct}%`;
+    }
+
+    function switchTab(tabName) {
+      const tabs = ["study", "practice", "schedule", "bank", "science"];
+      tabs.forEach(t => {
+        const panel = document.getElementById(`tab-${t}`);
+        const btn = document.getElementById(`navBtn-${t}`);
+        if (t === tabName) {
+          panel.classList.remove("hidden");
+          btn.className = "nav-tab-btn flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap bg-indigo-600 text-white shadow-sm transition";
+        } else {
+          panel.classList.add("hidden");
+          btn.className = "nav-tab-btn flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap text-slate-600 hover:bg-slate-100 transition";
+        }
+      });
+
+      if (tabName === "science") {
+        setTimeout(() => initScienceCharts(), 50);
+      } else if (tabName === "schedule") {
+        setTimeout(() => renderScheduleCharts(), 50);
+      } else if (tabName === "bank") {
+        renderWordBankTable();
+      } else if (tabName === "practice") {
+        renderPracticeHeaderAndState();
+        generateNextClozeQuestion();
+        renderStudioView();
+      }
+    }
+
+    function showToast(message, color = "indigo") {
+      const container = document.getElementById("toastContainer");
+      const el = document.createElement("div");
+      const bgMap = {
+        indigo: "bg-indigo-900 text-white border-indigo-700",
+        emerald: "bg-emerald-900 text-white border-emerald-700",
+        amber: "bg-amber-900 text-white border-amber-700"
+      };
+      el.className = `px-4 py-2.5 rounded-xl border shadow-lg text-xs font-semibold transition-all duration-300 ${bgMap[color] || bgMap.indigo}`;
+      el.textContent = message;
+      container.appendChild(el);
+      setTimeout(() => {
+        el.style.opacity = "0";
+        setTimeout(() => el.remove(), 300);
+      }, 2800);
+    }
+
+    window.addEventListener("keydown", (e) => {
+      const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : "";
+      if (activeTag === "input" || activeTag === "textarea" || activeTag === "select") return;
+
+      const studyPanelVisible = !document.getElementById("tab-study").classList.contains("hidden");
+      if (!studyPanelVisible) return;
+
+      if (e.code === "Space") {
+        e.preventDefault();
+        if (!isCardFlipped) revealCardAnswer();
+      } else if (e.key === "1" && isCardFlipped) {
+        rateCardSM2(1);
+      } else if (e.key === "2" && isCardFlipped) {
+        rateCardSM2(3);
+      } else if (e.key === "3" && isCardFlipped) {
+        rateCardSM2(4);
+      } else if (e.key === "4" && isCardFlipped) {
+        rateCardSM2(5);
+      } else if (e.key.toLowerCase() === "s") {
+        speakCurrentWord("en-US");
+      } else if (e.key === "ArrowRight") {
+        navigateStudyCard(1);
+      } else if (e.key === "ArrowLeft") {
+        navigateStudyCard(-1);
+      }
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+      initAppState();
+      document.getElementById("quickDailyGoalInput").value = appState.dailyNewGoal;
+      buildStudyQueue();
+      renderStudyView();
+      renderPracticeHeaderAndState();
+      generateNextClozeQuestion();
+      pickRandomStudioWords();
+      renderWordBankTable();
+    });
+  </script>
+</body>
+</html>
